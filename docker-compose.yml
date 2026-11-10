@@ -1,0 +1,36 @@
+# Local test stack: identity proxy + stock autotask-mcp (lazy-loading, gateway mode)
+#
+#   docker compose up --build
+#   curl http://127.0.0.1:8090/health
+#
+# autotask-mcp is NOT published to the host — only the proxy can reach it.
+# The proxy is published on 8090 → 8080.
+
+services:
+  autotask-mcp:
+    image: ghcr.io/wyre-ai/autotask-mcp:latest
+    container_name: autotask-mcp
+    environment:
+      MCP_TRANSPORT: http
+      AUTH_MODE: gateway
+      LAZY_LOADING: "true"
+      CONDUIT_S2S_SECRET: ${S2S_SECRET}
+      MCP_HTTP_PORT: "8080"
+      LOG_LEVEL: info
+    networks: [mcp]
+    restart: unless-stopped
+
+  proxy:
+    build: .
+    container_name: autotask-proxy
+    env_file: .env
+    environment:
+      UPSTREAM_URL: http://autotask-mcp:8080
+    ports:
+      - "8090:8080"
+    networks: [mcp]
+    depends_on: [autotask-mcp]
+    restart: unless-stopped
+
+networks:
+  mcp:
