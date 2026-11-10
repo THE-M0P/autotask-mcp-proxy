@@ -27,8 +27,9 @@ Zero dependencies, Node 20+, single file (`proxy.mjs`).
 | `GET /.well-known/oauth-protected-resource[/mcp]` | RFC 9728 metadata — what the M365 Agents Toolkit's OAuth registration reads |
 
 Unauthenticated `/mcp` calls get `401` + `WWW-Authenticate: Bearer
-resource_metadata="..."` — the same challenge shape CIPP's endpoint presents
-(see CIPP handover doc §3), which is what the toolkit expects.
+resource_metadata="..."` — the standard MCP OAuth discovery flow (an
+unauthenticated POST returns 401, the client follows `resource_metadata` to
+the authorization server), which is what the M365 Agents Toolkit expects.
 
 ## Config (env)
 
