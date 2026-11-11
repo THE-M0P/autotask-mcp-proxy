@@ -22,13 +22,16 @@ check('raw_request is write', isWriteTool('autotask_raw_request'), true);
 check('unknown tool defaults to write (fail-safe)', isWriteTool('autotask_something_new'), true);
 check('null/empty is not a write', isWriteTool(null), false);
 
-// --- writeToolInCall: JSON-RPC inspection ---
-const rpc = (name, args) =>
-  Buffer.from(JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } }));
+// --- writeToolInCall: JSON-RPC inspection (takes a parsed message or batch) ---
+const rpc = (name, args) => ({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } });
 
 check('direct read call passes', writeToolInCall(rpc('autotask_search_tickets', {})), null);
 check('direct write call caught', writeToolInCall(rpc('autotask_create_ticket', {})), 'autotask_create_ticket');
 check('raw_request caught', writeToolInCall(rpc('autotask_raw_request', {})), 'autotask_raw_request');
+check('batch with a write is caught', writeToolInCall([rpc('autotask_search_tickets', {}), rpc('autotask_create_ticket', {})]), 'autotask_create_ticket');
+check('batch of reads passes', writeToolInCall([rpc('autotask_search_tickets', {}), rpc('autotask_get_ticket_details', {})]), null);
+check('batch with write via execute_tool caught', writeToolInCall([rpc('autotask_execute_tool', { tool: 'autotask_delete_ticket' })]), 'autotask_delete_ticket');
+check('non-tools/call in batch passes', writeToolInCall([{ jsonrpc: '2.0', id: 1, method: 'tools/list' }]), null);
 check(
   'write smuggled via execute_tool caught',
   writeToolInCall(rpc('autotask_execute_tool', { tool: 'autotask_update_ticket' })),

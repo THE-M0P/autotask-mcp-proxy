@@ -110,10 +110,13 @@ async function validateToken(token) {
   if (!ok) throw httpError(401, 'bad signature');
 
   const now = Math.floor(Date.now() / 1000);
+  if (claims.nbf && claims.nbf > now) throw httpError(401, 'token not yet valid');
   if (claims.exp && claims.exp < now) throw httpError(401, 'token expired');
-  if (CFG.tenantId && claims.tid && claims.tid !== CFG.tenantId) throw httpError(401, 'wrong tenant');
-  if (CFG.tenantId && claims.iss && claims.iss !== `https://login.microsoftonline.com/${CFG.tenantId}/v2.0`) {
-    throw httpError(401, 'wrong issuer');
+  // Fail closed: when a tenant is configured, tid and iss MUST be present and match.
+  if (CFG.tenantId) {
+    if (!claims.tid || claims.tid !== CFG.tenantId) throw httpError(401, 'wrong tenant');
+    const expectedIss = `https://login.microsoftonline.com/${CFG.tenantId}/v2.0`;
+    if (!claims.iss || claims.iss !== expectedIss) throw httpError(401, 'wrong issuer');
   }
   const audiences = Array.isArray(claims.aud) ? claims.aud : [claims.aud];
   if (CFG.audience && !audiences.includes(CFG.audience)) throw httpError(401, 'wrong audience');
@@ -128,7 +131,20 @@ async function validateToken(token) {
 
 // ---------------------------------------------------- email → Autotask resource
 let zoneUrl = null;
-const resourceCache = new Map(); // upn (lowercase) → resource ID
+const resourceCache = new Map(); // upn (lowercase) → { id: number|null, at: epochMs }
+const POS_TTL = 10 * 60 * 1000; // positive results: 10 min (resource IDs are stable)
+const NEG_TTL = 30 * 1000; // negative results: 30 s (don't hammer Autotask for a missing user)
+
+function cacheGet(key) {
+  const e = resourceCache.get(key);
+  if (!e) return undefined;
+  const ttl = e.id === null ? NEG_TTL : POS_TTL;
+  if (Date.now() - e.at > ttl) {
+    resourceCache.delete(key);
+    return undefined;
+  }
+  return e.id; // number, or null (a cached "not found")
+}
 
 /** Autotask zone for the shared API user (unauthenticated lookup, cached). */
 async function getZoneUrl() {
@@ -152,7 +168,11 @@ async function resolveResourceId(upn) {
   const key = upn.toLowerCase();
 
   if (CFG.overrides[key] !== undefined) return CFG.overrides[key];
-  if (resourceCache.has(key)) return resourceCache.get(key);
+  const cached = cacheGet(key);
+  if (cached !== undefined) {
+    if (cached === null) throw httpError(403, `no Autotask resource for ${upn} (cached) — add an OVERRIDE_MAP entry or fix the resource email`);
+    return cached;
+  }
 
   const zone = await getZoneUrl();
   const res = await fetch(`${zone}/v1.0/Resources/query`, {
@@ -172,13 +192,17 @@ async function resolveResourceId(upn) {
   if (!res.ok) throw httpError(502, `Autotask resource lookup failed: HTTP ${res.status}`);
   const body = await res.json();
   const items = body.items || [];
-  // prefer an exact (case-insensitive) email match; Autotask `eq` can be loose
-  const match = items.find((r) => String(r.email || '').toLowerCase() === key) || items[0];
+  // Fail closed: prefer an exact (case-insensitive) email match. Autotask `eq`
+  // can be loose, so a single result is unambiguous, but multiple results with
+  // no exact match is a wrong-person risk — reject rather than guess.
+  const exact = items.find((r) => String(r.email || '').toLowerCase() === key);
+  const match = exact || (items.length === 1 ? items[0] : null);
   if (!match || match.id === undefined) {
-    throw httpError(403, `no Autotask resource found for ${upn} — add an OVERRIDE_MAP entry or fix the resource email`);
+    resourceCache.set(key, { id: null, at: Date.now() });
+    throw httpError(403, `no unambiguous Autotask resource for ${upn} (${items.length} match(es)) — add an OVERRIDE_MAP entry or fix the resource email`);
   }
-  resourceCache.set(key, match.id);
-  log(`resolved ${upn} → Autotask resource ${match.id}`);
+  resourceCache.set(key, { id: match.id, at: Date.now() });
+  log(`resolved ${upn} → Autotask resource ${match.id}${exact ? '' : ' (single loose match)'}`);
   return match.id;
 }
 
@@ -198,25 +222,25 @@ export function isWriteTool(name) {
 }
 
 /**
- * In READ_ONLY mode, inspect a tools/call JSON-RPC body and return the
- * offending tool name if it is a write. Handles the lazy-loading meta-tool
- * (autotask_execute_tool carries the real tool in arguments.tool).
+ * In READ_ONLY mode, inspect a parsed tools/call JSON-RPC message (or a batch
+ * of them) and return the offending tool name if any is a write. Handles the
+ * lazy-loading meta-tool (autotask_execute_tool carries the real tool in
+ * arguments.tool) and JSON-RPC batch arrays.
  */
-export function writeToolInCall(bodyBuf) {
-  if (!CFG.readOnly || !bodyBuf.length) return null;
-  let rpc;
-  try {
-    rpc = JSON.parse(bodyBuf.toString('utf8'));
-  } catch {
-    return null; // not JSON (e.g. batch/SSE) — let it through
+export function writeToolInCall(rpc) {
+  if (!CFG.readOnly || !rpc) return null;
+  const requests = Array.isArray(rpc) ? rpc : [rpc];
+  for (const r of requests) {
+    if (r?.method !== 'tools/call') continue;
+    const name = r.params?.name;
+    if (name === 'autotask_execute_tool') {
+      const inner = r.params?.arguments?.tool;
+      if (isWriteTool(inner)) return inner;
+    } else if (isWriteTool(name)) {
+      return name;
+    }
   }
-  if (rpc.method !== 'tools/call') return null;
-  const name = rpc.params?.name;
-  if (name === 'autotask_execute_tool') {
-    const inner = rpc.params?.arguments?.tool;
-    return isWriteTool(inner) ? inner : null;
-  }
-  return isWriteTool(name) ? name : null;
+  return null;
 }
 
 // ------------------------------------------------------- docs-as-tools
@@ -431,9 +455,15 @@ function protectedResourceMetadata(req) {
 }
 
 // --------------------------------------------------------------- forwarding
+const MAX_BODY = 10 * 1024 * 1024; // 10 MB — MCP requests are small; cap memory
 async function readBody(req) {
   const chunks = [];
-  for await (const c of req) chunks.push(c);
+  let size = 0;
+  for await (const c of req) {
+    size += c.length;
+    if (size > MAX_BODY) throw httpError(413, 'request body too large');
+    chunks.push(c);
+  }
   return Buffer.concat(chunks);
 }
 
@@ -455,7 +485,13 @@ async function handleMcp(req, res) {
     return;
   }
 
-  const body = await readBody(req);
+  let body;
+  try {
+    body = await readBody(req);
+  } catch (err) {
+    res.writeHead(err.status || 413, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({ error: err.message }));
+  }
   let rpc = null;
   try {
     rpc = body.length ? JSON.parse(body.toString('utf8')) : null;
@@ -463,7 +499,8 @@ async function handleMcp(req, res) {
     rpc = null;
   }
 
-  // docs tools: answered locally, never forwarded upstream
+  // docs tools: answered locally, never forwarded upstream (single requests —
+  // the norm; a docs call inside a batch is forwarded upstream and fails there)
   if (
     rpc?.method === 'tools/call' &&
     (rpc.params?.name === DOCS_TOOL.name || rpc.params?.name === DOCS_GET_TOOL.name)
@@ -471,7 +508,7 @@ async function handleMcp(req, res) {
     return respondDocsCall(res, rpc);
   }
 
-  const writeTool = writeToolInCall(body);
+  const writeTool = writeToolInCall(rpc);
   if (writeTool) {
     log(`READ_ONLY: rejected write tool ${writeTool} for ${upn}`);
     res.writeHead(403, { 'Content-Type': 'application/json' });

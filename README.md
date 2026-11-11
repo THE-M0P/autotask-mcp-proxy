@@ -142,3 +142,21 @@ That line *is* the audit trail for the identity layer.
 - If Autotask ever returns 401 on the shared keycard, the zone cache is
   invalidated by autotask-mcp itself; the proxy's `zoneUrl` cache is
   process-lifetime — a restart clears it.
+
+## Security hardening
+
+The proxy is the identity layer, so it fails closed. Specifics:
+
+- **Token validation:** RS256 only (blocks `none` / HS256 alg-confusion),
+  signature checked against the tenant's JWKS, and `exp`, `nbf`, `tid`, `iss`,
+  `aud`, and scope are all enforced. When `TENANT_ID` is set, `tid` and `iss`
+  are *required* (a token missing them is rejected, not skipped).
+- **Read-only gate is batch-aware:** a JSON-RPC batch (array) is inspected
+  element-by-element, so a write hidden in a batch is still rejected.
+- **Resource resolution fails closed:** an exact email match is preferred;
+  a single loose match is accepted, but *multiple* loose matches with no exact
+  match are rejected (403) rather than guessing a person. Lookups are cached
+  with a short negative TTL so a missing user doesn't hammer Autotask.
+- **Body size capped** at 10 MB (413 above that).
+- **S2S replay protection** is handled upstream: autotask-mcp rejects
+  `x-gateway-s2s` headers whose timestamp is more than 5 minutes stale.
