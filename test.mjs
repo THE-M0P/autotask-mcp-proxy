@@ -9,12 +9,15 @@ function check(label, actual, expected) {
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${label}  (got ${JSON.stringify(actual)}, want ${JSON.stringify(expected)})`);
 }
 
-// --- config: OVERRIDE_MAP keys normalised to lowercase ---
+// --- config: OVERRIDE_MAP keys normalised to lowercase, null-safe ---
 {
-  const raw = { 'Someone@Company.com': 12345, 'other@company.com': 67890 };
-  const normalized = Object.fromEntries(Object.entries(raw).map(([k, v]) => [String(k).toLowerCase(), v]));
-  check('override: mixed-case key normalised to lowercase', normalized['someone@company.com'], 12345);
-  check('override: already-lowercase key unchanged', normalized['other@company.com'], 67890);
+  const safeJson = (raw, fb) => { try { return raw ? JSON.parse(raw) : fb; } catch { return fb; } };
+  const norm = (raw) => Object.fromEntries(Object.entries(safeJson(raw, {}) || {}).map(([k, v]) => [String(k).toLowerCase(), v]));
+  check('override: mixed-case key normalised to lowercase', norm('{"Someone@Company.com": 12345}')['someone@company.com'], 12345);
+  check('override: already-lowercase key unchanged', norm('{"other@company.com": 67890}')['other@company.com'], 67890);
+  check('override: JSON "null" does not crash (returns {})', norm('null'), {});
+  check('override: empty/undefined does not crash (returns {})', norm(undefined), {});
+  check('override: non-object JSON ("123") does not crash (returns {})', norm('123'), {});
 }
 
 // --- isWriteTool: prefix classification of the real 110-tool surface ---

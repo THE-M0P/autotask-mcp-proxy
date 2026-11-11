@@ -177,3 +177,8 @@ The proxy is the identity layer, so it fails closed. Specifics:
 - **`resourceCache` evicts lazily:** an entry is dropped on its next access
   after its TTL, so a user who is never seen again keeps their entry until
   restart. Bounded in practice (pilot-scale user counts).
+- **Client disconnect mid-stream:** if the client drops the connection while
+  the proxy is streaming the upstream response, the proxy waits for a `drain`
+  that may never come and holds the upstream connection until it finishes.
+  Low risk — the M365 runtime doesn't typically abort mid-response — but worth
+  knowing.

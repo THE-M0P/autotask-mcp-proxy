@@ -53,7 +53,7 @@ const CFG = {
   // edge cases: {"someone@company.com": 12345} — keys normalised to lowercase
   // so a mixed-case entry still matches the lowercased UPN lookup
   overrides: Object.fromEntries(
-    Object.entries(safeJson(process.env.OVERRIDE_MAP, {})).map(([k, v]) => [String(k).toLowerCase(), v])
+    Object.entries(safeJson(process.env.OVERRIDE_MAP, {}) || {}).map(([k, v]) => [String(k).toLowerCase(), v])
   ),
   // CIPP-style read-only surface: reject write tools (pilot phase 1)
   readOnly: (process.env.READ_ONLY || 'false').toLowerCase() === 'true',
@@ -477,7 +477,9 @@ async function readBody(req) {
 
 async function handleMcp(req, res) {
   const auth = req.headers.authorization || '';
-  const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
+  // RFC 7235: the auth-scheme is case-insensitive (Bearer / bearer / BEARER)
+  const m = /^Bearer\s+/i.exec(auth);
+  const token = m ? auth.slice(m[0].length) : null;
   if (!token) return send401Challenge(res, req);
 
   let upn;
