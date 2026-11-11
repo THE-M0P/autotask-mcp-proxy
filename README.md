@@ -57,7 +57,8 @@ Then point **MCP Inspector** at it (the same tool used to prove CIPP worked):
 2. Transport: Streamable HTTP, URL `http://127.0.0.1:8090/mcp`
 3. No token → you should see the 401 challenge (proves the OAuth metadata path)
 4. With a valid token for `AUDIENCE` + `REQUIRED_SCOPE` → `tools/list` should
-   return the 4 lazy-loading meta-tools, and `tools/call` on
+   return the 4 lazy-loading meta-tools **plus the 2 injected docs tools**
+   (`autotask_docs_search`, `autotask_docs_get`), and `tools/call` on
    `autotask_list_categories` should return live Autotask data attributed to
    the token's user (check the proxy log line: `user=... resource=... → 200`)
 
@@ -67,6 +68,22 @@ Any Entra token for the resource app works, e.g. via MCP Inspector's own
 OAuth flow once the "Autotask-MCP resource app" registration exists with a
 `http://127.0.0.1:<port>/callback` redirect (dev only — remove before prod,
 same rule as the CIPP Inspector redirect).
+
+## Tests
+
+Two dependency-free suites, both run with plain `node` (no test framework):
+
+```bash
+node test.mjs                # proxy: 46 assertions (tool gating, docs search/get,
+                             #        tools/list merge, override normalisation)
+node test/scrape.test.mjs    # scraper: 30 assertions (both Autotask HTML layouts,
+                             #        field/type detection, with regression fixtures)
+```
+
+The one thing these can't cover is the full wire path (real token →
+`tools/call` → JSON-RPC response through the proxy) — that needs a live
+Autotask + Entra and is exercised in the pilot (see the plan doc's security
+tests).
 
 ## Docs-as-tools (autotask_docs_search + autotask_docs_get)
 
