@@ -1,0 +1,12 @@
+# Keep the build context small — the image only needs proxy.mjs + docs/
+.git
+.env
+.env.*
+test/
+test.mjs
+scripts/
+docker-compose.yml
+Dockerfile
+.dockerignore
+*.log
+node_modules/
