@@ -150,7 +150,10 @@ The proxy is the identity layer, so it fails closed. Specifics:
 - **Token validation:** RS256 only (blocks `none` / HS256 alg-confusion),
   signature checked against the tenant's JWKS, and `exp`, `nbf`, `tid`, `iss`,
   `aud`, and scope are all enforced. When `TENANT_ID` is set, `tid` and `iss`
-  are *required* (a token missing them is rejected, not skipped).
+  are *required* (a token missing them is rejected, not skipped). A malformed
+  JWT (bad base64url / non-JSON header or payload) is a 401, not a 500.
+- **`OVERRIDE_MAP` keys are case-insensitive:** they're normalised to lowercase
+  at load, so `{"Someone@Company.com": 123}` matches the lowercased UPN lookup.
 - **Read-only gate is batch-aware:** a JSON-RPC batch (array) is inspected
   element-by-element, so a write hidden in a batch is still rejected.
 - **Resource resolution fails closed:** an exact email match is preferred;
@@ -160,3 +163,17 @@ The proxy is the identity layer, so it fails closed. Specifics:
 - **Body size capped** at 10 MB (413 above that).
 - **S2S replay protection** is handled upstream: autotask-mcp rejects
   `x-gateway-s2s` headers whose timestamp is more than 5 minutes stale.
+
+### Known limitations (low risk, documented)
+
+- **JWKS / zone lookups have no in-flight dedup:** if the cache is stale and
+  several requests arrive at once, each fetches (a thundering herd). Harmless —
+  the result is identical — just a few extra calls.
+- **Docs tools are answered for single requests only:** a docs call inside a
+  JSON-RPC batch is forwarded upstream (and fails there) rather than answered
+  locally. Batches are not how the M365 runtime talks to MCP.
+- **SSE tools/list merge assumes single-line `data:` JSON:** correct for how
+  MCP emits SSE; a multi-line `data:` payload would not be merged.
+- **`resourceCache` evicts lazily:** an entry is dropped on its next access
+  after its TTL, so a user who is never seen again keeps their entry until
+  restart. Bounded in practice (pilot-scale user counts).

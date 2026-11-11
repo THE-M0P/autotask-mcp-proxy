@@ -9,6 +9,14 @@ function check(label, actual, expected) {
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${label}  (got ${JSON.stringify(actual)}, want ${JSON.stringify(expected)})`);
 }
 
+// --- config: OVERRIDE_MAP keys normalised to lowercase ---
+{
+  const raw = { 'Someone@Company.com': 12345, 'other@company.com': 67890 };
+  const normalized = Object.fromEntries(Object.entries(raw).map(([k, v]) => [String(k).toLowerCase(), v]));
+  check('override: mixed-case key normalised to lowercase', normalized['someone@company.com'], 12345);
+  check('override: already-lowercase key unchanged', normalized['other@company.com'], 67890);
+}
+
 // --- isWriteTool: prefix classification of the real 110-tool surface ---
 check('search tool is read', isWriteTool('autotask_search_tickets'), false);
 check('get tool is read', isWriteTool('autotask_get_ticket_details'), false);

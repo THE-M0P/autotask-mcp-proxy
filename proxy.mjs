@@ -50,8 +50,11 @@ const CFG = {
   tenantId: process.env.TENANT_ID || '',
   audience: process.env.AUDIENCE || '', // expected token `aud` (resource app client ID)
   requiredScope: process.env.REQUIRED_SCOPE || '', // e.g. "autotask_access"
-  // edge cases: {"someone@company.com": 12345}
-  overrides: safeJson(process.env.OVERRIDE_MAP, {}),
+  // edge cases: {"someone@company.com": 12345} — keys normalised to lowercase
+  // so a mixed-case entry still matches the lowercased UPN lookup
+  overrides: Object.fromEntries(
+    Object.entries(safeJson(process.env.OVERRIDE_MAP, {})).map(([k, v]) => [String(k).toLowerCase(), v])
+  ),
   // CIPP-style read-only surface: reject write tools (pilot phase 1)
   readOnly: (process.env.READ_ONLY || 'false').toLowerCase() === 'true',
 };
@@ -95,8 +98,13 @@ async function validateToken(token) {
   const [h64, p64, s64] = String(token).split('.');
   if (!h64 || !p64 || !s64) throw httpError(401, 'malformed token');
 
-  const header = b64urlToJson(h64);
-  const claims = b64urlToJson(p64);
+  let header, claims;
+  try {
+    header = b64urlToJson(h64);
+    claims = b64urlToJson(p64);
+  } catch {
+    throw httpError(401, 'malformed token');
+  }
   const sig = Buffer.from(s64.replace(/-/g, '+').replace(/_/g, '/'), 'base64');
 
   if (header.alg !== 'RS256') throw httpError(401, `unsupported alg ${header.alg}`);
