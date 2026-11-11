@@ -11,7 +11,7 @@ Describes an Autotask Inventory location , that is, a physical or virtual place 
 |---|---|---|
 | `locationName` | string (50) | locationName must be unique. |
 | `resourceID` | integer | If resourceID has a value, isDefault cannot = True. |
-| `impersonatorCreatorResourceID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
 | `isActive` | boolean |  |
 | `isDefault` | boolean |  |
 

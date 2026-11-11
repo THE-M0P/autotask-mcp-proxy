@@ -16,13 +16,13 @@ This entity contains notes for documents in Autotask.
 
 ## Fields (7)
 
-| Field | Type |
-|---|---|
-| `createdByResourceID` | integer |
-| `createdDateTime` | datetime |
-| `description` | string (32000) |
-| `documentID` | integer |
-| `lastModifiedByResourceID` | integer |
-| `lastModifiedDateTime` | datetime |
-| `title` | string (250) |
+| Field | Type | Notes |
+|---|---|---|
+| `createdByResourceID` | integer | Resources |
+| `createdDateTime` | datetime |  |
+| `description` | string (32000) |  |
+| `documentID` | integer | Documents |
+| `lastModifiedByResourceID` | integer | Resources |
+| `lastModifiedDateTime` | datetime |  |
+| `title` | string (250) |  |
 

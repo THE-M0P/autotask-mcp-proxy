@@ -32,11 +32,11 @@ Describes Expense Reports created in Autotask and is used to submit expense line
 | `submitDate` | datetime | The submitDate field of the expenseReports entity is set to Null on create. When you make an update call that sets the submit field to true, the API will set the submitDate to match the time and date of the update call. |
 | `submitterID` | integer | submitterID must = a valid resourceID. |
 | `approvedDate` | datetime |  |
-| `approverID` | integer |  |
+| `approverID` | integer | Resources |
 | `departmentNumber` | string (50) |  |
 | `internalCurrencyCashAdvanceAmount` | decimal |  |
 | `name` | string (100) |  |
-| `organizationalLevelAssociationID` | integer |  |
+| `organizationalLevelAssociationID` | integer | OrganizationalLevelAssociations |
 | `quickBooksReferenceNumber` | string (100) |  |
 | `weekEnding` | datetime |  |
 

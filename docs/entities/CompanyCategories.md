@@ -16,12 +16,12 @@ This entity represents company (account) categories in Autotask. A company's cat
 
 ## Fields (6)
 
-| Field | Type |
-|---|---|
-| `displayColorRGB` | integer |
-| `isActive` | boolean |
-| `isApiOnly` | boolean |
-| `isGlobalDefault` | boolean |
-| `name` | string (30) |
-| `nickname` | (3) |
+| Field | Type | Notes |
+|---|---|---|
+| `displayColorRGB` | integer |  |
+| `isActive` | boolean |  |
+| `isApiOnly` | boolean |  |
+| `isGlobalDefault` | boolean |  |
+| `name` | string (30) |  |
+| `nickname` |  | (3) |
 

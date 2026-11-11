@@ -7,17 +7,17 @@ This entity contains the records for the Deleted Task Activity journal located i
 
 ## Fields (11)
 
-| Field | Type |
-|---|---|
-| `activityDateTime` | datetime |
-| `createdByResourceID` | integer |
-| `deletedByResourceID` | integer |
-| `deletedDateTime` | datetime |
-| `endDateTime` | datetime |
-| `hoursWorked` | decimal |
-| `noteOrAttachmentTitle` | string (255) |
-| `startDateTime` | datetime |
-| `taskID` | integer |
-| `taskNumber` | string (50) |
-| `typeID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `activityDateTime` | datetime |  |
+| `createdByResourceID` | integer | Resources |
+| `deletedByResourceID` | integer | Resources |
+| `deletedDateTime` | datetime |  |
+| `endDateTime` | datetime |  |
+| `hoursWorked` | decimal |  |
+| `noteOrAttachmentTitle` | string (255) |  |
+| `startDateTime` | datetime |  |
+| `taskID` | integer | Tasks |
+| `taskNumber` | string (50) |  |
+| `typeID` | integer |  |
 

@@ -16,8 +16,8 @@ This entity contains tag associations for documents in Autotask.
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `documentID` | integer |
-| `tagID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `documentID` | integer | Documents |
+| `tagID` | integer | Tags |
 

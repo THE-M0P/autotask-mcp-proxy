@@ -7,30 +7,30 @@ Describes an Autotask Sales Order. In Autotask, a sales order is associated with
 
 ## Fields (24)
 
-| Field | Type |
-|---|---|
-| `additionalBillToAddressInformation` | string (100) |
-| `additionalShipToAddressInformation` | string (100) |
-| `billingAddress1` | string (150) |
-| `billingAddress2` | string (150) |
-| `billToCity` | string (50) |
-| `billToCountryID` | integer |
-| `billToPostalCode` | string (50) |
-| `billToState` | string (50) |
-| `companyID` | integer |
-| `contactID` | integer |
-| `impersonatorCreatorResourceID` | integer |
-| `opportunityID` | integer |
-| `organizationalLevelAssociationID` | integer |
-| `ownerResourceID` | integer |
-| `promisedFulfillmentDate` | datetime |
-| `salesOrderDate` | datetime |
-| `shipToAddress1` | string (150) |
-| `shipToAddress2` | string (150) |
-| `shipToCity` | string (50) |
-| `shipToCountryID` | integer |
-| `shipToPostalCode` | string (50) |
-| `shipToState` | string (50) |
-| `status` | integer |
-| `title` | string (128) |
+| Field | Type | Notes |
+|---|---|---|
+| `additionalBillToAddressInformation` | string (100) |  |
+| `additionalShipToAddressInformation` | string (100) |  |
+| `billingAddress1` | string (150) |  |
+| `billingAddress2` | string (150) |  |
+| `billToCity` | string (50) |  |
+| `billToCountryID` | integer | Countries |
+| `billToPostalCode` | string (50) |  |
+| `billToState` | string (50) |  |
+| `companyID` | integer | Companies |
+| `contactID` | integer | Contacts |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | integer | Opportunities |
+| `organizationalLevelAssociationID` | integer | OrganizationalLevelAssociations |
+| `ownerResourceID` | integer | Resources |
+| `promisedFulfillmentDate` | datetime |  |
+| `salesOrderDate` | datetime |  |
+| `shipToAddress1` | string (150) |  |
+| `shipToAddress2` | string (150) |  |
+| `shipToCity` | string (50) |  |
+| `shipToCountryID` | integer | Countries |
+| `shipToPostalCode` | string (50) |  |
+| `shipToState` | string (50) |  |
+| `status` | integer |  |
+| `title` | string (128) |  |
 

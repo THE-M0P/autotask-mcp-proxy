@@ -7,9 +7,9 @@ Describes a billing rate for an Autotask Contract. A Contract Rate is associated
 
 ## Fields (3)
 
-| Field | Type |
-|---|---|
-| `contractHourlyRate` | decimal |
-| `contractID` | integer |
-| `roleID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `contractHourlyRate` | decimal |  |
+| `contractID` | integer | Contracts |
+| `roleID` | integer | Roles |
 

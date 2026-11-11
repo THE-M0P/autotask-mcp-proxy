@@ -18,9 +18,9 @@ This entity contains the categories that hold Knowledgebase articles in Autotask
 
 ## Fields (3)
 
-| Field | Type |
-|---|---|
-| `description` | string (1000) |
-| `name` | string (50) |
-| `parentCategoryID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `description` | string (1000) |  |
+| `name` | string (50) |  |
+| `parentCategoryID` | integer | KnowledgeBaseCategories |
 

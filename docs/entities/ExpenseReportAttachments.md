@@ -20,14 +20,14 @@ This entity contains the attachments for the ExpenseReports entity. For more inf
 |---|---|---|
 | `expenseItemID` | integer | Query results will include attachments parented to ExpenseItems that are, themselves, parented to ExpenseReports with expenseReportID values referenced in the query. |
 | `attachDate` | datetime |  |
-| `attachedByContactID` | long |  |
-| `attachedByResourceID` | long |  |
+| `attachedByContactID` | long | Contacts |
+| `attachedByResourceID` | long | Resources |
 | `attachmentType` | string (30) |  |
 | `contentType` | string (100) |  |
-| `expenseReportID` | integer |  |
+| `expenseReportID` | integer | ExpenseReports |
 | `fullPath` | string (255) |  |
-| `impersonatorCreatorResourceID` | integer |  |
-| `opportunityID` | long |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | long | Opportunities |
 | `parentID` | long |  |
 | `publish` | integer |  |
 | `title` | string (255) |  |

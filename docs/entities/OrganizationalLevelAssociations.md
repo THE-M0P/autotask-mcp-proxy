@@ -7,9 +7,9 @@ When the Organizational Structure feature is enabled in Autotask, this entity de
 
 ## Fields (3)
 
-| Field | Type |
-|---|---|
-| `isActive` | boolean |
-| `organizationalLevel1ID` | integer |
-| `organizationalLevel2ID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `isActive` | boolean |  |
+| `organizationalLevel1ID` | integer | OrganizationalLevel1 |
+| `organizationalLevel2ID` | integer | OrganizationalLevel2 |
 

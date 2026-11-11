@@ -13,10 +13,10 @@ This entity contains checklist items related to documents in Autotask.
 
 ## Fields (4)
 
-| Field | Type |
-|---|---|
-| `documentID` | integer |
-| `isImportant` | boolean |
-| `itemName` | string (600) |
-| `position` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `documentID` | integer | Documents |
+| `isImportant` | boolean |  |
+| `itemName` | string (600) |  |
+| `position` | integer |  |
 

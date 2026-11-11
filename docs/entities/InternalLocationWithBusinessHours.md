@@ -17,7 +17,7 @@ Describes key business details for the Autotask Zero Company, that is, the Autot
 | `address1` | string (100) |  |
 | `address2` | string (100) |  |
 | `city` | string (50) |  |
-| `countryID` | integer |  |
+| `countryID` | integer | Countries |
 | `dateFormat` | string (50) |  |
 | `fridayBusinessHoursEndTime` | datetime |  |
 | `fridayBusinessHoursStartTime` | datetime |  |
@@ -27,7 +27,7 @@ Describes key business details for the Autotask Zero Company, that is, the Autot
 | `holidayExtendedHoursStartTime` | datetime |  |
 | `holidayHoursEndTime` | datetime |  |
 | `holidayHoursStartTime` | datetime |  |
-| `holidaySetID` | integer |  |
+| `holidaySetID` | integer | HolidaySets |
 | `mondayBusinessHoursEndTime` | datetime |  |
 | `mondayBusinessHoursStartTime` | datetime |  |
 | `mondayExtendedHoursEndTime` | datetime |  |

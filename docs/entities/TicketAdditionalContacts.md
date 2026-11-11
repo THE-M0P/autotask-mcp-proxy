@@ -7,8 +7,8 @@ Describes one or more account contacts assigned to a Ticket, other than the Tick
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `contactID` | integer |
-| `ticketID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `contactID` | integer | Contacts |
+| `ticketID` | integer | Tickets |
 

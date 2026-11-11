@@ -14,7 +14,7 @@ Describes an Autotask Service that has been added to a Recurring Service type co
 | `serviceID` | integer | The same Service ID can be added to a contract more than once. |
 | `unitCost` | decimal | unitCost does not allow a negative value. On create, if no unitCost is supplied, it will default to the unitCost of the associated service. This entity field will return no information if the user account making the query does not have sufficient privileges to view cost data in the Autotask UI. Additionally, if an update request does not have the necessary permissions, the API will ignore the call's values for the field even if they are blank or would be otherwise required. |
 | `unitPrice` | decimal | unitPrice allows a negative value (allows users to apply discount). If the Multi-currency Installed Module is enabled, this field will return the relevant Customer Currency value instead of the Internal Currency value. |
-| `contractID` | integer |  |
+| `contractID` | integer | Contracts |
 | `internalDescription` | string (100) |  |
-| `quoteItemID` | long |  |
+| `quoteItemID` | long | QuoteItems |
 

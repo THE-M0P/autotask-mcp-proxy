@@ -16,19 +16,19 @@ This entity contains the attachments for the ConfigurationItemNotes entity. For 
 
 ## Fields (13)
 
-| Field | Type |
-|---|---|
-| `attachDate` | datetime |
-| `attachedByContactID` | long |
-| `attachedByResourceID` | long |
-| `attachmentType` | string (30) |
-| `configurationItemID` | integer |
-| `configurationItemNoteID` | integer |
-| `contentType` | string (100) |
-| `fullPath` | string (255) |
-| `impersonatorCreatorResourceID` | integer |
-| `opportunityID` | long |
-| `parentID` | long |
-| `publish` | integer |
-| `title` | string (255) |
+| Field | Type | Notes |
+|---|---|---|
+| `attachDate` | datetime |  |
+| `attachedByContactID` | long | Contacts |
+| `attachedByResourceID` | long | Resources |
+| `attachmentType` | string (30) |  |
+| `configurationItemID` | integer | ConfigurationItems |
+| `configurationItemNoteID` | integer | ConfigurationItemNotes |
+| `contentType` | string (100) |  |
+| `fullPath` | string (255) |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | long | Opportunities |
+| `parentID` | long |  |
+| `publish` | integer |  |
+| `title` | string (255) |  |
 

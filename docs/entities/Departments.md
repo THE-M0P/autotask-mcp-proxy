@@ -7,10 +7,10 @@ Describes an Autotask Department. A Department is an association used to manage 
 
 ## Fields (4)
 
-| Field | Type |
-|---|---|
-| `description` | string (1000) |
-| `name` | string (100) |
-| `number` | string (50) |
-| `primaryLocationID` | long |
+| Field | Type | Notes |
+|---|---|---|
+| `description` | string (1000) |  |
+| `name` | string (100) |  |
+| `number` | string (50) |  |
+| `primaryLocationID` | long | InternalLocationWithBusinessHours |
 

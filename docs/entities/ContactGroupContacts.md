@@ -7,8 +7,8 @@ Describes a Contact associated with a ContactGroup. Contact Groups are an associ
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `contactGroupId` | integer |
-| `contactID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `contactGroupId` | integer | ContactGroups |
+| `contactID` | integer | Contacts |
 

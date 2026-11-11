@@ -7,12 +7,12 @@ Describes a record of approval for a ticket change request. The change request a
 
 ## Fields (6)
 
-| Field | Type |
-|---|---|
-| `approveRejectDateTime` | datetime |
-| `approveRejectNote` | string (2000) |
-| `contactID` | integer |
-| `isApproved` | boolean |
-| `resourceID` | integer |
-| `ticketID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `approveRejectDateTime` | datetime |  |
+| `approveRejectNote` | string (2000) |  |
+| `contactID` | integer | Contacts |
+| `isApproved` | boolean |  |
+| `resourceID` | integer | Resources |
+| `ticketID` | integer | Tickets |
 

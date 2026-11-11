@@ -16,8 +16,8 @@ This entity represents associations between assets and documents in Autotask.
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `documentID` | integer |
-| `installedProductID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `documentID` | integer | Documents |
+| `installedProductID` | integer | ConfigurationItems |
 

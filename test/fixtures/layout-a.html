@@ -1,0 +1,20 @@
+<h1><a name="a1"></a>Tasks<a name="a2"></a></h1>
+<p>This entity describes an Autotask Task. Tasks are associated with a Project.</p>
+<table>
+  <tr><td style="text-align: right;">Entity Name: </td><td>Tasks</td></tr>
+  <tr><td style="text-align: right;"><p>Entity Path:</p></td><td><p>/atservicesrest/v<span class="mc-variable">1.0</span>/Tasks</p></td></tr>
+  <tr><td style="text-align: right;">Can Create: </td><td><img src=".../CheckMark.png" class="IconNoBorder" /></td></tr>
+  <tr><td style="text-align: right;">Can Update: </td><td><img src=".../CheckMark.png" class="IconNoBorder" /></td></tr>
+  <tr><td style="text-align: right;">Can Query: </td><td><img src=".../CheckMark.png" class="IconNoBorder" /></td></tr>
+  <tr><td style="text-align: right;">Can Delete: </td><td>&#160;</td></tr>
+  <tr><td>Parent</td><td>Projects</td></tr>
+  <tr><td>Children</td><td><a href="x">ProjectNotes</a>, <a href="x">Tasks</a></td></tr>
+  <tr><td>URLs</td><td>Tasks/query (GET, POST)<br />Tasks/{id} (GET)</td></tr>
+</table>
+<table>
+  <tr><td>estimatedHours</td><td>decimal</td><td>&#160;</td><td>&#160;</td><td>&#160;</td><td>&#160;</td></tr>
+  <tr><td>projectID</td><td>integer</td><td>&#160;</td><td>&#160;</td><td>&#160;</td><td>&#160;</td></tr>
+</table>
+<table>
+  <tr><td>projectID</td><td>On update, projectID cannot be changed.</td></tr>
+</table>

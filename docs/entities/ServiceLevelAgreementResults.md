@@ -17,20 +17,20 @@ Describes time and completion data related to service level events tracked for a
 
 ## Fields (14)
 
-| Field | Type |
-|---|---|
-| `firstResponseElapsedHours` | decimal |
-| `firstResponseInitiatingResourceID` | integer |
-| `firstResponseResourceID` | integer |
-| `isFirstResponseMet` | boolean |
-| `isResolutionMet` | boolean |
-| `isResolutionPlanMet` | boolean |
-| `resolutionElapsedHours` | decimal |
-| `resolutionPlanElapsedHours` | decimal |
-| `resolutionPlanResourceID` | integer |
-| `resolutionResourceID` | integer |
-| `resourceID` | integer |
-| `serviceCallTicketID` | integer |
-| `serviceLevelAgreementName` | string (100) |
-| `ticketID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `firstResponseElapsedHours` | decimal |  |
+| `firstResponseInitiatingResourceID` | integer | Resources |
+| `firstResponseResourceID` | integer | Resources |
+| `isFirstResponseMet` | boolean |  |
+| `isResolutionMet` | boolean |  |
+| `isResolutionPlanMet` | boolean |  |
+| `resolutionElapsedHours` | decimal |  |
+| `resolutionPlanElapsedHours` | decimal |  |
+| `resolutionPlanResourceID` | integer | Resources |
+| `resolutionResourceID` | integer | Resources |
+| `resourceID` | integer |  |
+| `serviceCallTicketID` | integer | Resources |
+| `serviceLevelAgreementName` | string (100) |  |
+| `ticketID` | integer | Tickets |
 

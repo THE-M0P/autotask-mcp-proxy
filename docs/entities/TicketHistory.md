@@ -7,11 +7,11 @@ Describes the Ticket History, which tracks changes to the fields of the ticket e
 
 ## Fields (5)
 
-| Field | Type |
-|---|---|
-| `action` | string (100) |
-| `date` | datetime |
-| `detail` | string (1800) |
-| `resourceID` | integer |
-| `ticketID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `action` | string (100) |  |
+| `date` | datetime |  |
+| `detail` | string (1800) |  |
+| `resourceID` | integer | Resources |
+| `ticketID` | integer | Tickets |
 

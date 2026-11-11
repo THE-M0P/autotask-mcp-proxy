@@ -15,6 +15,6 @@ Describes notes created by an Autotask user and associated with a Product entity
 | `title` | string (250) | Represents the title of the note; maximum of 250 characters |
 | `createDateTime` | datetime |  |
 | `impersonatorCreatorResourceID` | integer |  |
-| `impersonatorUpdaterResourceID` | integer |  |
+| `impersonatorUpdaterResourceID` | integer | Resource |
 | `lastActivityDate` | datetime |  |
 

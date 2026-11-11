@@ -13,9 +13,9 @@ Describes a Country as defined in the Autotask CRM module. The Countries entity 
 | `addressFormatID` | long |  |
 | `countryCode` | string (2) |  |
 | `displayName` | string (100) |  |
-| `invoiceTemplateID` | integer |  |
+| `invoiceTemplateID` | integer | InvoiceTemplates |
 | `isActive` | boolean |  |
 | `isDefaultCountry` | boolean |  |
 | `name` | string (50) |  |
-| `quoteTemplateID` | integer |  |
+| `quoteTemplateID` | integer | QuoteTemplates |
 

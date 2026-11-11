@@ -15,27 +15,27 @@ Describes the remaining time off a resource has accrued or has been allotted, ac
 
 ## Fields (21)
 
-| Field | Type |
-|---|---|
-| `floatingHolidayAnnualAllowance` | Decimal |
-| `floatingHolidayBalance` | Decimal |
-| `floatingHolidayPlanned` | Decimal |
-| `floatingHolidayUsed` | Decimal |
-| `floatingHolidayApproval` | Decimal |
-| `personalTimeAnnualAllowance` | Decimal |
-| `personalTimeBalance` | Decimal |
-| `personalTimePlanned` | Decimal |
-| `personalTimeUsed` | Decimal |
-| `personalTimeWaitingApproval` | Decimal |
-| `resourceID` | Integer |
-| `sickTimeAnnualAllowance` | Decimal |
-| `sickTimeBalance` | Decimal |
-| `sickTimePlanned` | Decimal |
-| `sickTimeUsed` | Decimal |
-| `sickTimeWaitingApproval` | Decimal |
-| `vacationAnnualAllowance` | Decimal |
-| `vacationBalance` | Decimal |
-| `vacationPlanned` | Decimal |
-| `vacationUsed` | Decimal |
-| `vacationWaitingApproval` | Decimal |
+| Field | Type | Notes |
+|---|---|---|
+| `floatingHolidayAnnualAllowance` | Decimal |  |
+| `floatingHolidayBalance` | Decimal |  |
+| `floatingHolidayPlanned` | Decimal |  |
+| `floatingHolidayUsed` | Decimal |  |
+| `floatingHolidayApproval` | Decimal |  |
+| `personalTimeAnnualAllowance` | Decimal |  |
+| `personalTimeBalance` | Decimal |  |
+| `personalTimePlanned` | Decimal |  |
+| `personalTimeUsed` | Decimal |  |
+| `personalTimeWaitingApproval` | Decimal |  |
+| `resourceID` | Integer | Resources |
+| `sickTimeAnnualAllowance` | Decimal |  |
+| `sickTimeBalance` | Decimal |  |
+| `sickTimePlanned` | Decimal |  |
+| `sickTimeUsed` | Decimal |  |
+| `sickTimeWaitingApproval` | Decimal |  |
+| `vacationAnnualAllowance` | Decimal |  |
+| `vacationBalance` | Decimal |  |
+| `vacationPlanned` | Decimal |  |
+| `vacationUsed` | Decimal |  |
+| `vacationWaitingApproval` | Decimal |  |
 

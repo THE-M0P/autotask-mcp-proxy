@@ -7,8 +7,8 @@ The CompanySiteConfigurations entity takes on the UDFs that hold the site setup 
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `companyID` | integer |
-| `locationName` | string (100) |
+| Field | Type | Notes |
+|---|---|---|
+| `companyID` | integer | Companies |
+| `locationName` | string (100) |  |
 

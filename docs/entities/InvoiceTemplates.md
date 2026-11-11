@@ -7,30 +7,30 @@ Describes an Autotask Invoice Template that defines the content and appearance o
 
 ## Fields (24)
 
-| Field | Type |
-|---|---|
-| `coveredByBlockRetainerContractLabel` | string (50) |
-| `coveredByRecurringServiceFixedPricePerTicketContractLabel` | string (50) |
-| `currencyNegativeFormat` | string (10) |
-| `currencyPositiveFormat` | string (10) |
-| `dateFormat` | integer |
-| `displayFixedPriceContractLabor` | boolean |
-| `displayRecurringServiceContractLabor` | boolean |
-| `displaySeparateLineItemForEachTax` | boolean |
-| `displayTaxCategory` | boolean |
-| `displayTaxCategorySuperscripts` | boolean |
-| `displayZeroAmountRecurringServicesAndBundles` | boolean |
-| `groupBy` | integer |
-| `itemizeItemsInEachGroup` | integer |
-| `name` | string (50) |
-| `nonBillableLaborLabel` | string (50) |
-| `numberFormat` | integer |
-| `pageLayout` | integer |
-| `pageNumberFormat` | integer |
-| `paymentTerms` | integer |
-| `rateCostExpression` | string (50) |
-| `showGridHeader` | boolean |
-| `showVerticalGridLines` | boolean |
-| `sortBy` | integer |
-| `timeFormat` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `coveredByBlockRetainerContractLabel` | string (50) |  |
+| `coveredByRecurringServiceFixedPricePerTicketContractLabel` | string (50) |  |
+| `currencyNegativeFormat` | string (10) |  |
+| `currencyPositiveFormat` | string (10) |  |
+| `dateFormat` | integer |  |
+| `displayFixedPriceContractLabor` | boolean |  |
+| `displayRecurringServiceContractLabor` | boolean |  |
+| `displaySeparateLineItemForEachTax` | boolean |  |
+| `displayTaxCategory` | boolean |  |
+| `displayTaxCategorySuperscripts` | boolean |  |
+| `displayZeroAmountRecurringServicesAndBundles` | boolean |  |
+| `groupBy` | integer |  |
+| `itemizeItemsInEachGroup` | integer |  |
+| `name` | string (50) |  |
+| `nonBillableLaborLabel` | string (50) |  |
+| `numberFormat` | integer |  |
+| `pageLayout` | integer |  |
+| `pageNumberFormat` | integer |  |
+| `paymentTerms` | integer | PaymentTerms |
+| `rateCostExpression` | string (50) |  |
+| `showGridHeader` | boolean |  |
+| `showVerticalGridLines` | boolean |  |
+| `sortBy` | integer |  |
+| `timeFormat` | integer |  |
 

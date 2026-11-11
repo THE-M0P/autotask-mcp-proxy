@@ -15,18 +15,18 @@ This entity contains the attachments for the SalesOrders entity. For more inform
 
 ## Fields (12)
 
-| Field | Type |
-|---|---|
-| `attachDate` | datetime |
-| `attachedByContactID` | long |
-| `attachedByResourceID` | long |
-| `attachmentType` | string (30) |
-| `contentType` | string (100) |
-| `fullPath` | string (255) |
-| `impersonatorCreatorResourceID` | integer |
-| `opportunityID` | long |
-| `parentID` | long |
-| `publish` | integer |
-| `salesOrderID` | integer |
-| `title` | string (255) |
+| Field | Type | Notes |
+|---|---|---|
+| `attachDate` | datetime |  |
+| `attachedByContactID` | long | Contacts |
+| `attachedByResourceID` | long | Resources |
+| `attachmentType` | string (30) |  |
+| `contentType` | string (100) |  |
+| `fullPath` | string (255) |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | long | Opportunities |
+| `parentID` | long |  |
+| `publish` | integer |  |
+| `salesOrderID` | integer | SalesOrders |
+| `title` | string (255) |  |
 

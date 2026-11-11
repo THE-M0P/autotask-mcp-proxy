@@ -34,8 +34,8 @@ The Contracts entity describes an Autotask Contract. Contracts specify a billing
 | `setupFee` | decimal | setupFee field is Required for Recurring Service type Contracts. |
 | `setupFeeBillingCodeID` | long | You cannot select the RMA system material code for setupFeeBillingCodeID. |
 | `startDate` | datetime | contract.startDate must be < contract.endDate. |
-| `billToCompanyContactID` | integer |  |
-| `companyID` | integer |  |
+| `billToCompanyContactID` | integer | Contacts |
+| `companyID` | integer | Companies |
 | `contractCategory` | integer |  |
 | `contractName` | string (100) |  |
 | `contractNumber` | string (50) |  |
@@ -47,7 +47,7 @@ The Contracts entity describes an Autotask Contract. Contracts specify a billing
 | `estimatedRevenue` | decimal |  |
 | `isDefaultContract` | boolean |  |
 | `lastModifiedDateTime` | datetime |  |
-| `organizationalLevelAssociationID` | integer |  |
+| `organizationalLevelAssociationID` | integer | OrganizationalLevelAssociations |
 | `overageBillingRate` | decimal |  |
 | `purchaseOrderNumber` | string (50) |  |
 | `renewedContractID` | long |  |

@@ -7,12 +7,12 @@ Describes a Resource - Role - Department relationship. A resource must be assign
 
 ## Fields (6)
 
-| Field | Type |
-|---|---|
-| `departmentID` | integer |
-| `isActive` | boolean |
-| `isDefault` | boolean |
-| `isDepartmentLead` | boolean |
-| `resourceID` | integer |
-| `roleID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `departmentID` | integer | Departments |
+| `isActive` | boolean |  |
+| `isDefault` | boolean |  |
+| `isDepartmentLead` | boolean |  |
+| `resourceID` | integer | Resources |
+| `roleID` | integer | Roles |
 

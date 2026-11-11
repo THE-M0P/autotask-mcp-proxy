@@ -15,5 +15,5 @@ Describes a transaction where a specified quantity of a purchaseOrderItem is 're
 | `quantityNowReceiving` | integer |  |
 | `quantityPreviouslyReceived` | integer |  |
 | `receiveDate` | datetime |  |
-| `receivedByResourceID` | integer |  |
+| `receivedByResourceID` | integer | Resources |
 

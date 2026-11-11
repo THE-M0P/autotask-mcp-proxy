@@ -19,13 +19,13 @@ This entity represents articles created by Knowledgebase users in Autotask.
 | Field | Type | Notes |
 |---|---|---|
 | `content` |  | IMPORTANT Updates to the content field will remove any Rich Text formatting and embedded images that it contains. |
-| `articleCategoryID` | integer |  |
-| `createdByResourceID` | integer |  |
+| `articleCategoryID` | integer | KnowledgeBaseCategories |
+| `createdByResourceID` | integer | Resources |
 | `createdDateTime` | datetime |  |
 | `errorCodes` | string (200) |  |
 | `isActive` | boolean |  |
 | `keywords` | string (300) |  |
-| `lastModifiedByResourceID` | integer |  |
+| `lastModifiedByResourceID` | integer | Resources |
 | `lastModifiedDateTime` | datetime |  |
 | `publish` | integer |  |
 | `referenceLink` | string (500) |  |

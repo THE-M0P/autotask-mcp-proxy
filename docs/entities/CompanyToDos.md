@@ -14,14 +14,14 @@ Describes a To-Do created by an Autotask user and associated with an Autotask Co
 | `contactID` | long | contactID must reference an isActive Autotask Contact associated with the Company referenced by the companyID field or from the parentCompany of the Company referenced by the Quote companyID. |
 | `actionType` | integer |  |
 | `activityDescription` | string (32000) |  |
-| `assignedToResourceID` | long |  |
-| `contractID` | long |  |
+| `assignedToResourceID` | long | Resources |
+| `contractID` | long | Contracts |
 | `createDateTime` | datetime |  |
-| `creatorResourceID` | long |  |
+| `creatorResourceID` | long | Resources |
 | `endDateTime` | datetime |  |
-| `impersonatorCreatorResourceID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
 | `lastModifiedDate` | datetime |  |
-| `opportunityID` | long |  |
+| `opportunityID` | long | Opportunities |
 | `startDateTime` | datetime |  |
-| `ticketID` | long |  |
+| `ticketID` | long | Tickets |
 

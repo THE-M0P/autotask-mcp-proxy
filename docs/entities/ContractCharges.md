@@ -18,14 +18,14 @@ Describes a cost associated with an Autotask Contract. A cost is a billing item 
 | `status` |  | Status is read-only. On create, when Procurement is enabled, Status is set as follows: If productID is null, then Status = Ready to Ship. If productID references a Product where doesNotRequireProcurement = True, then Status = Ready to Ship. If productID references a Product where doesNotRequireProcurement = False and the Product is not available in Inventory, then Status = Need To Order. If productID references a Product where doesNotRequireProcurement = False and the Product is available in Inventory, then Status = Ready to Ship. If Status = Need To Order and extendedCost is > the value set in the system setting "Require approval before ordering..." then Status is automatically set to Waiting Approval. When Procurement is disabled, Status = Pending |
 | `unitCost` | decimal | This entity field will return no information if the user account making the query does not have sufficient privileges to view cost data in the Autotask UI. Additionally, if an update request does not have the necessary permissions, the API will ignore the call's values for the field even if they are blank or would be otherwise required. |
 | `chargeType` | integer |  |
-| `contractServiceBundleID` | long |  |
-| `contractServiceID` | long |  |
+| `contractServiceBundleID` | long | ContractServiceBundles |
+| `contractServiceID` | long | ContractServices |
 | `createDate` | datetime |  |
-| `creatorResourceID` | long |  |
+| `creatorResourceID` | long | Resources |
 | `datePurchased` | datetime |  |
 | `internalPurchaseOrderNumber` | string (50) |  |
-| `organizationalLevelAssociationID` | integer |  |
-| `productID` | long |  |
+| `organizationalLevelAssociationID` | integer | OrganizationalLevelAssociations |
+| `productID` | long | Products |
 | `purchaseOrderNumber` | string (50) |  |
 | `statusLastModifiedBy` | long |  |
 | `statusLastModifiedDate` | datetime |  |

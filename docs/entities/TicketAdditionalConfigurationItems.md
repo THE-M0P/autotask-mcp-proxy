@@ -7,8 +7,8 @@ Describes one or more Autotask Assets (previously known as Configuration Items) 
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `configurationItemID` | integer |
-| `ticketID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `configurationItemID` | integer | ConfigurationItems |
+| `ticketID` | integer | Tickets |
 

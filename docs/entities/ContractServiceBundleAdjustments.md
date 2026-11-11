@@ -13,9 +13,9 @@ Describes an adjustment to the quantity of units of a ServiceBundle that are add
 | `contractServiceBundleID` | integer | If contractServiceBundleID is provided, contractID and serviceBundleID are not required (in other words, either contractID and serviceBundleID OR contractServiceBundleID is required |
 | `allowRepeatService` |  | allowRepeatService must equal True in order to create two or more instances of the same Service on a contract. |
 | `allowRepeatServiceBundle` | boolean |  |
-| `contractID` | integer |  |
+| `contractID` | integer | Contracts |
 | `effectiveDate` | datetime |  |
-| `quoteItemID` | integer |  |
-| `serviceBundleID` | integer |  |
+| `quoteItemID` | integer | QuoteItems |
+| `serviceBundleID` | integer | ServiceBundles |
 | `unitChange` | integer |  |
 

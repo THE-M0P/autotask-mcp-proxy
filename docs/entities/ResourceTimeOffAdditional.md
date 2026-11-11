@@ -14,25 +14,25 @@ Describes time off the resource has been granted for the current and next year i
 
 ## Fields (19)
 
-| Field | Type |
-|---|---|
-| `currentYear` | Integer |
-| `currentYearAdditionalFloatingHoliday` | Decimal |
-| `currentYearAdditionalPersonalTime` | Decimal |
-| `currentYearAdditionalSickTime` | Decimal |
-| `currentYearAdditionalVacationTime` | Decimal |
-| `currentYearAnnualFloatingHoliday` | Decimal |
-| `currentYearAnnualPersonalTime` | Decimal |
-| `currentYearAnnualSickTime` | Decimal |
-| `currentYearAnnualVacationTime` | Decimal |
-| `nextYear` | Integer |
-| `nextYearAdditionalFloatingHoliday` | Decimal |
-| `nextYearAdditionalPersonalTime` | Decimal |
-| `nextYearAdditionalSickTime` | Decimal |
-| `nextYearAdditionalVacationTime` | Decimal |
-| `nextYearAnnualFloatingHoliday` | Decimal |
-| `nextYearAnnualPersonalTime` | Decimal |
-| `nextYearAnnualSickTime` | Decimal |
-| `nextYearAnnualVacationTime` | Decimal |
-| `resourceID` | Integer |
+| Field | Type | Notes |
+|---|---|---|
+| `currentYear` | Integer |  |
+| `currentYearAdditionalFloatingHoliday` | Decimal |  |
+| `currentYearAdditionalPersonalTime` | Decimal |  |
+| `currentYearAdditionalSickTime` | Decimal |  |
+| `currentYearAdditionalVacationTime` | Decimal |  |
+| `currentYearAnnualFloatingHoliday` | Decimal |  |
+| `currentYearAnnualPersonalTime` | Decimal |  |
+| `currentYearAnnualSickTime` | Decimal |  |
+| `currentYearAnnualVacationTime` | Decimal |  |
+| `nextYear` | Integer |  |
+| `nextYearAdditionalFloatingHoliday` | Decimal |  |
+| `nextYearAdditionalPersonalTime` | Decimal |  |
+| `nextYearAdditionalSickTime` | Decimal |  |
+| `nextYearAdditionalVacationTime` | Decimal |  |
+| `nextYearAnnualFloatingHoliday` | Decimal |  |
+| `nextYearAnnualPersonalTime` | Decimal |  |
+| `nextYearAnnualSickTime` | Decimal |  |
+| `nextYearAnnualVacationTime` | Decimal |  |
+| `resourceID` | Integer | Resources |
 

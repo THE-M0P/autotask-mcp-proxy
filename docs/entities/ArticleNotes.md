@@ -16,13 +16,13 @@ This entity contains notes for Knowledgebase articles in Autotask.
 
 ## Fields (7)
 
-| Field | Type |
-|---|---|
-| `articleID` | integer |
-| `createdByResourceID` | integer |
-| `createdDateTime` | datetime |
-| `description` | string (32000) |
-| `lastModifiedByResourceID` | integer |
-| `lastModifiedDateTime` | datetime |
-| `title` | string (250) |
+| Field | Type | Notes |
+|---|---|---|
+| `articleID` | integer | KnowledgeBaseArticles |
+| `createdByResourceID` | integer | Resources |
+| `createdDateTime` | datetime |  |
+| `description` | string (32000) |  |
+| `lastModifiedByResourceID` | integer | Resources |
+| `lastModifiedDateTime` | datetime |  |
+| `title` | string (250) |  |
 

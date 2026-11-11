@@ -25,7 +25,7 @@ Describes an Autotask Opportunity. An opportunity is a forecasted piece of busin
 | `closedDate` | datetime | Supply date-only values for this field. The API will automatically remove time values. |
 | `companyID` | integer | The companyID reference by Opportunity.contactID must = Opportunity.companyID, that is, the Opportunity Contact must be associated with the same Company as the Opportunity. |
 | `contactID` | integer | contactID must reference an isActive Autotask Contact associated with the Company referenced by the companyID field or from the parentCompany of the Company referenced by the Quote companyID. |
-| `description` | string (8,000) | This field not required, regardless of opportunity category "requiredness" settings. |
+| `description` |  | This field not required, regardless of opportunity category "requiredness" settings. |
 | `lostDate` | datetime | If Status is changed to Lost and a lostDate is supplied, then the supplied lostDate value will remain. If Status is changed to Lost and a lostDate is not supplied, then the lostDate is set to UtcNow. If Status is changed to something other than Lost, then the lostDate field is cleared, even if a value is supplied. If Status has not changed, Status is Lost, and a lostDate value is supplied, then the supplied lostDate value will remain. If Status has not changed, Status is not Lost, and a lostDate value is supplied, then the supplied lostDate value will be ignored (existing lostDate value will remain). |
 | `onetimeRevenue` | decimal | Invoice.Amount (Revenue) value for Opportunities created via Web Services are written to the One-Time Revenue column in the database. If an Opportunity is later updated via Web Services, any new value provided for Amount will be written to the One-Time Amount column and any values in the Monthly Amount, Quarterly Amount, Semi-Annual Amount, and Yearly Amount database columns will be cleared. |
 | `opportunityCategoryID` | integer | The "required" status and available list value settings for fields stored on the opportunity's opportunity category will NOT be respected when creating or editing opportunities in the API. If no opportunity category is specified, the system default opportunity category is used. The default values for all fields stored on the utilized opportunity category are applied. If you specify a value for a field that is also defaulted by the opportunity category, your specified value is used. |
@@ -50,7 +50,7 @@ Describes an Autotask Opportunity. An opportunity is a forecasted piece of busin
 | `createDate` | datetime |  |
 | `creatorResourceID` | integer |  |
 | `helpNeeded` | string (500) |  |
-| `impersonatorCreatorResourceID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
 | `lastActivity` | datetime |  |
 | `leadSource` | integer |  |
 | `lossReason` | integer |  |
@@ -61,14 +61,14 @@ Describes an Autotask Opportunity. An opportunity is a forecasted piece of busin
 | `nextStep` | string (500) |  |
 | `onetimeCost` | decimal |  |
 | `primaryCompetitor` | integer |  |
-| `productID` | integer |  |
+| `productID` | integer | Products |
 | `promisedFulfillmentDate` | datetime |  |
 | `promotionName` | string (50) |  |
 | `quarterlyCost` | decimal |  |
 | `quarterlyRevenue` | decimal |  |
 | `rating` | integer |  |
 | `relationshipAssessmentScore` | decimal |  |
-| `salesOrderID` | integer |  |
+| `salesOrderID` | integer | SalesOrders |
 | `salesProcessPercentComplete` | decimal |  |
 | `semiannualCost` | decimal |  |
 | `semiannualRevenue` | decimal |  |

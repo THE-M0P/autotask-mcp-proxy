@@ -7,12 +7,12 @@ Describes an Autotask SubscriptionPeriods entity. This entity stores the informa
 
 ## Fields (6)
 
-| Field | Type |
-|---|---|
-| `periodCost` | decimal |
-| `periodDate` | datetime |
-| `periodPrice` | decimal |
-| `postedDate` | datetime |
-| `purchaseOrderNumber` | string (50) |
-| `subscriptionID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `periodCost` | decimal |  |
+| `periodDate` | datetime |  |
+| `periodPrice` | decimal |  |
+| `postedDate` | datetime |  |
+| `purchaseOrderNumber` | string (50) |  |
+| `subscriptionID` | integer | Subscriptions |
 

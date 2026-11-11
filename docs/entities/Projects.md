@@ -33,9 +33,9 @@ Describes an Autotask Project. A project defines and organizes a group of relate
 | `changeOrdersRevenue` | decimal |  |
 | `completedDateTime` | datetime |  |
 | `completedPercentage` | integer |  |
-| `contractID` | integer |  |
+| `contractID` | integer | Contracts |
 | `createDateTime` | datetime |  |
-| `creatorResourceID` | integer |  |
+| `creatorResourceID` | integer | Resources |
 | `department` | integer |  |
 | `description` | string (2000) |  |
 | `duration` | integer |  |
@@ -43,20 +43,20 @@ Describes an Autotask Project. A project defines and organizes a group of relate
 | `estimatedTime` | decimal |  |
 | `extProjectNumber` | string (50) |  |
 | `extProjectType` | integer |  |
-| `impersonatorCreatorResourceID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
 | `laborEstimatedCosts` | decimal |  |
 | `laborEstimatedMarginPercentage` | decimal |  |
 | `laborEstimatedRevenue` | decimal |  |
 | `lastActivityDateTime` | datetime |  |
 | `lastActivityPersonType` | integer |  |
-| `lastActivityResourceID` | integer |  |
-| `opportunityID` | integer |  |
-| `organizationalLevelAssociationID` | integer |  |
+| `lastActivityResourceID` | integer | Resources |
+| `opportunityID` | integer | Opportunities |
+| `organizationalLevelAssociationID` | integer | Projects |
 | `originalEstimatedRevenue` | decimal |  |
 | `projectCostEstimatedMarginPercentage` | decimal |  |
 | `projectCostsBudget` | decimal |  |
 | `projectCostsRevenue` | decimal |  |
-| `projectLeadResourceID` | integer |  |
+| `projectLeadResourceID` | integer | Resources |
 | `projectName` | string (100) |  |
 | `projectNumber` | string (50) |  |
 | `projectType` | integer |  |

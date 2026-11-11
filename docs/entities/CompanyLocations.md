@@ -15,8 +15,8 @@ The CompanyLocations entity describes an individual business unit that is associ
 | `alternatePhone1` | string (25) |  |
 | `alternatePhone2` | string (25) |  |
 | `city` | string (50) |  |
-| `companyID` | integer |  |
-| `countryID` | integer |  |
+| `companyID` | integer | Companies |
+| `countryID` | integer | Countries |
 | `description` | string (500) |  |
 | `isActive` | boolean |  |
 | `isTaxExempt` | boolean |  |
@@ -26,5 +26,5 @@ The CompanyLocations entity describes an individual business unit that is associ
 | `postalCode` | string (20) |  |
 | `roundtripDistance` | decimal |  |
 | `state` | string (25) |  |
-| `taxRegionID` | integer |  |
+| `taxRegionID` | integer | TaxRegions |
 

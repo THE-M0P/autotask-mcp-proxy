@@ -26,10 +26,10 @@ An inventory product represents a set of stocked items that share a product and 
 | `backOrderQuantity` | integer |  |
 | `bin` | string (50) |  |
 | `createDateTime` | datetime |  |
-| `createdByResourceID` | integer |  |
+| `createdByResourceID` | integer | Resources |
 | `onHandUnits` | integer |  |
 | `pickedUnits` | integer |  |
-| `productID` | integer |  |
+| `productID` | integer | Products |
 | `quantityMaximum` | integer |  |
 | `quantityMinimum` | integer |  |
 | `referenceNumber` | string (50) |  |

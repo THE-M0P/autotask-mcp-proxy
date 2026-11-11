@@ -7,16 +7,16 @@ The ContractMilestone entity describes a billing milestone for an Autotask Fixed
 
 ## Fields (10)
 
-| Field | Type |
-|---|---|
-| `amount` | decimal |
-| `billingCodeID` | integer |
-| `contractID` | integer |
-| `createDate` | datetime |
-| `creatorResourceID` | integer |
-| `dateDue` | datetime |
-| `description` | string (250) |
-| `isInitialPayment` | boolean |
-| `status` | integer |
-| `title` | string (100) |
+| Field | Type | Notes |
+|---|---|---|
+| `amount` | decimal |  |
+| `billingCodeID` | integer | ProjectCharges |
+| `contractID` | integer | Contracts |
+| `createDate` | datetime |  |
+| `creatorResourceID` | integer | Resources |
+| `dateDue` | datetime |  |
+| `description` | string (250) |  |
+| `isInitialPayment` | boolean |  |
+| `status` | integer |  |
+| `title` | string (100) |  |
 

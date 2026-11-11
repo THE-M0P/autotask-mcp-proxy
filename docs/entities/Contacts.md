@@ -21,18 +21,18 @@ The Contacts entity describes an individual associated with a Company. Autotask 
 | `apiVendorID` | integer |  |
 | `billingContact` | boolean |  |
 | `city` | string (32) |  |
-| `companyID` | integer |  |
-| `countryID` | integer |  |
+| `companyID` | integer | Companies |
+| `countryID` | integer | Countries |
 | `createDate` | datetime |  |
 | `emailAddress` | string (50) |  |
-| `emailAddress2` | string (50 |  |
-| `emailAddress3` | string (50 |  |
+| `emailAddress2` |  | string (50 |
+| `emailAddress3` |  | string (50 |
 | `extension` | string (10) |  |
 | `externalID` | string (50) |  |
 | `facebookUrl` | string (200) |  |
 | `faxNumber` | string (25) |  |
 | `firstName` | string (20) |  |
-| `impersonatorCreatorResourceID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
 | `isActive` | integer |  |
 | `lastActivityDate` | datetime |  |
 | `lastModifiedDate` | datetime |  |

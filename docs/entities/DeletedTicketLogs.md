@@ -7,11 +7,11 @@ This entity contains the records for the Deleted Ticket log located in the Autot
 
 ## Fields (5)
 
-| Field | Type |
-|---|---|
-| `deletedByResourceID` | integer |
-| `deletedDateTime` | datetime |
-| `ticketID` | integer |
-| `ticketNumber` | string (50) |
-| `ticketTitle` | string (255) |
+| Field | Type | Notes |
+|---|---|---|
+| `deletedByResourceID` | integer | Resources |
+| `deletedDateTime` | datetime |  |
+| `ticketID` | integer | Tickets |
+| `ticketNumber` | string (50) |  |
+| `ticketTitle` | string (255) |  |
 

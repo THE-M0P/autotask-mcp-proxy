@@ -14,9 +14,9 @@ Describes an adjustment to the quantity of units of a ContractService entity tha
 | `contractServiceID` |  | If contractServiceID is provided, contractID and serviceID are not required (in other words, either contractID and serviceID OR ContractService ID is required |
 | `unitPrice` |  | unitPrice allows a negative value (allows users to apply discount). |
 | `adjustedUnitCost` | decimal |  |
-| `contractID` | integer |  |
+| `contractID` | integer | If no contractServiceID is provided |
 | `effectiveDate` | datetime |  |
-| `quoteItemID` | integer |  |
-| `serviceID` | integer |  |
+| `quoteItemID` | integer | QuoteItems |
+| `serviceID` | integer | If no contractServiceID is provided |
 | `unitChange` | integer |  |
 

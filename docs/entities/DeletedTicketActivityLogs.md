@@ -7,17 +7,17 @@ This entity contains the records for the Deleted Ticket Activity journal located
 
 ## Fields (11)
 
-| Field | Type |
-|---|---|
-| `activityDateTime` | datetime |
-| `createdByResourceID` | integer |
-| `deletedByResourceID` | integer |
-| `deletedDateTime` | datetime |
-| `endDateTime` | datetime |
-| `hoursWorked` | decimal |
-| `noteOrAttachmentTitle` | string (255) |
-| `startDateTime` | datetime |
-| `ticketID` | integer |
-| `ticketNumber` | string (50) |
-| `typeID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `activityDateTime` | datetime |  |
+| `createdByResourceID` | integer | Resources |
+| `deletedByResourceID` | integer | Resources |
+| `deletedDateTime` | datetime |  |
+| `endDateTime` | datetime |  |
+| `hoursWorked` | decimal |  |
+| `noteOrAttachmentTitle` | string (255) |  |
+| `startDateTime` | datetime |  |
+| `ticketID` | integer | Tickets |
+| `ticketNumber` | string (50) |  |
+| `typeID` | integer |  |
 

@@ -7,9 +7,9 @@ Describes a secondary resource assigned to a project Task. Secondary resources a
 
 ## Fields (3)
 
-| Field | Type |
-|---|---|
-| `resourceID` | long |
-| `roleID` | long |
-| `taskID` | long |
+| Field | Type | Notes |
+|---|---|---|
+| `resourceID` | long | Resources |
+| `roleID` | long | Roles |
+| `taskID` | long | Tasks |
 

@@ -18,5 +18,5 @@ Describes a currency available for use with the Autotask multi-currency installe
 | `isActive` | boolean |  |
 | `isInternalCurrency` | boolean |  |
 | `name` | string (3) |  |
-| `updateResourceId` | integer |  |
+| `updateResourceId` | integer | Resources |
 

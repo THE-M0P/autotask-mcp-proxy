@@ -7,25 +7,25 @@ Describes an Autotask Quote Template that defines the content and appearance of 
 
 ## Fields (19)
 
-| Field | Type |
-|---|---|
-| `calculateTaxSeparately` | boolean |
-| `createDate` | datetime |
-| `createdBy` | integer |
-| `currencyNegativeFormat` | string (10) |
-| `currencyPositiveFormat` | string (10) |
-| `dateFormat` | integer |
-| `description` | string (200) |
-| `displayTaxCategorySuperscripts` | boolean |
-| `isActive` | boolean |
-| `lastActivityBy` | integer |
-| `lastActivityDate` | datetime |
-| `name` | string (50) |
-| `numberFormat` | integer |
-| `pageLayout` | integer |
-| `pageNumberFormat` | integer |
-| `showEachTaxInGroup` | boolean |
-| `showGridHeader` | boolean |
-| `showTaxCategory` | boolean |
-| `showVerticalGridLines` | boolean |
+| Field | Type | Notes |
+|---|---|---|
+| `calculateTaxSeparately` | boolean |  |
+| `createDate` | datetime |  |
+| `createdBy` | integer | Resources |
+| `currencyNegativeFormat` | string (10) |  |
+| `currencyPositiveFormat` | string (10) |  |
+| `dateFormat` | integer |  |
+| `description` | string (200) |  |
+| `displayTaxCategorySuperscripts` | boolean |  |
+| `isActive` | boolean |  |
+| `lastActivityBy` | integer | Resources |
+| `lastActivityDate` | datetime |  |
+| `name` | string (50) |  |
+| `numberFormat` | integer |  |
+| `pageLayout` | integer |  |
+| `pageNumberFormat` | integer |  |
+| `showEachTaxInGroup` | boolean |  |
+| `showGridHeader` | boolean |  |
+| `showTaxCategory` | boolean |  |
+| `showVerticalGridLines` | boolean |  |
 

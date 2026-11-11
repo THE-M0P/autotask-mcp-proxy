@@ -7,10 +7,10 @@ The Tax entity describes the tax rate charged to a customer for specific goods o
 
 ## Fields (4)
 
-| Field | Type |
-|---|---|
-| `taxCategoryID` | integer |
-| `taxName` | string (100) |
-| `taxRate` | decimal |
-| `taxRegionID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `taxCategoryID` | integer | TaxCategories |
+| `taxName` | string (100) |  |
+| `taxRate` | decimal |  |
+| `taxRegionID` | integer | TaxRegions |
 

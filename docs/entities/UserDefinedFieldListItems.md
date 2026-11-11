@@ -17,11 +17,11 @@ Describes a list item associated with a UserDefinedFieldDefinition entity that h
 
 ## Fields (5)
 
-| Field | Type |
-|---|---|
-| `createDate` | datetime |
-| `isActive` | boolean |
-| `udfFieldId` | long |
-| `valueForDisplay` | string (128) |
-| `valueForExport` | string (128) |
+| Field | Type | Notes |
+|---|---|---|
+| `createDate` | datetime |  |
+| `isActive` | boolean |  |
+| `udfFieldId` | long | UserDefinedFieldDefinitions |
+| `valueForDisplay` | string (128) |  |
+| `valueForExport` | string (128) |  |
 

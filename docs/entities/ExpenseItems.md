@@ -21,20 +21,20 @@ Describes a line item associated with an Expense Report entity. It allows expens
 | `reimbursementCurrencyReimbursementAmount` | decimal | reimbursementCurrencyReimbursementAmount = the reimbursement amount for this expense in the reimbursement currency of ExpenseItem.expenseReportID (the expense's expense report.) This field impacts databases with multi-currency enabled. If this value is not supplied on creation of an ExpenseItem, the field will be populated by dividing the internalCurrencyExpenseAmount by the exchangeRate of the ReimbursementCurrency associated with the ExpenseItem's ExpenseReport. If the ExpenseItem.paymentType is not reimbursable, this value will be 0 and cannot be updated. If this value is edited, the internalCurrencyReimbursementAmount will be recalculated by multiplying the new value by the exchangeRate of the ReimbursementCurrency associated with the ExpenseItem's ExpenseReport. If both values are supplied or edited at the same time, we will take the internalCurrencyReimbursementAmount as the correct one and calculate the reimbursementCurrencyReimbursementAmount. The supplied reimbursementCurrencyReimbursementAmount will be discarded. |
 | `workType` | integer | workType picklist options are configurable in the Autotask Admin module. Use REST API GET call to retrieve the list for a specific implementation. |
 | `description` | string (128) |  |
-| `destination` | string (128) |  |
-| `expenseCurrencyID` | integer |  |
+| `destination` | string (128) | See Conditions |
+| `expenseCurrencyID` | integer | Currencies |
 | `expenseDate` | datetime |  |
 | `gLCode` | String(20) |  |
 | `haveReceipt` | boolean |  |
 | `isBillableToCompany` | boolean |  |
 | `isReimbursable` | boolean |  |
 | `isRejected` | boolean |  |
-| `miles` | decimal |  |
+| `miles` | decimal | See Conditions |
 | `odometerEnd` | decimal |  |
 | `odometerStart` | decimal |  |
-| `origin` | string (128) |  |
-| `projectID` | integer |  |
+| `origin` | string (128) | See Conditions |
+| `projectID` | integer | Projects |
 | `purchaseOrderNumber` | string (50) |  |
-| `taskID` | integer |  |
-| `ticketID` | integer |  |
+| `taskID` | integer | Tasks |
+| `ticketID` | integer | Tickets |
 

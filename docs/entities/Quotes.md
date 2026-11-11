@@ -30,33 +30,33 @@ Describes a Quote in Autotask. The quote allows users to specify and track multi
 | `showTaxCategory` | boolean | showTaxCategory defaults to false. |
 | `taxRegionID` | integer | In Autotask, Tax Regions have replaced Tax Groups. To preserve existing API code, Quote.taxRegionID passes the taxRegionID. |
 | `approvalStatus` | integer |  |
-| `approvalStatusChangedByResourceID` | integer |  |
+| `approvalStatusChangedByResourceID` | integer | Resources |
 | `approvalStatusChangedDate` | datetime |  |
-| `billToLocationID` | integer |  |
+| `billToLocationID` | integer | QuoteLocations |
 | `calculateTaxSeparately` | boolean |  |
 | `comment` | string (1000) |  |
 | `createDate` | datetime |  |
-| `creatorResourceID` | integer |  |
+| `creatorResourceID` | integer | Resources |
 | `description` | string (2000) |  |
 | `effectiveDate` | datetime |  |
 | `extApprovalContactResponse` | integer |  |
 | `extApprovalResponseDate` | datetime |  |
 | `extApprovalResponseSignature` | string (250) |  |
 | `groupByID` | integer |  |
-| `impersonatorCreatorResourceID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
 | `isActive` | boolean |  |
 | `lastActivityDate` | datetime |  |
-| `lastModifiedBy` | integer |  |
-| `lastPublishedByResourceID` | integer |  |
+| `lastModifiedBy` | integer | Resources |
+| `lastPublishedByResourceID` | integer | Resources |
 | `lastPublishedDateTime` | datetime |  |
 | `name` | string (100) |  |
 | `paymentTerm` | integer |  |
 | `paymentType` | integer |  |
 | `purchaseOrderNumber` | string (50) |  |
 | `quoteNumber` | integer |  |
-| `quoteTemplateID` | integer |  |
-| `shippingType` | integer |  |
-| `shipToLocationID` | integer |  |
+| `quoteTemplateID` | integer | QuoteTemplates |
+| `shippingType` | integer | ShippingTypes |
+| `shipToLocationID` | integer | QuoteLocations |
 | `showEachTaxInGroup` | boolean |  |
-| `soldToLocationID` | integer |  |
+| `soldToLocationID` | integer | QuoteLocations |
 

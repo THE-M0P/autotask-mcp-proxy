@@ -7,25 +7,25 @@ Describes an Autotask Notification, as listed in the Notification History page. 
 
 ## Fields (19)
 
-| Field | Type |
-|---|---|
-| `companyID` | long |
-| `entityNumber` | string (50) |
-| `entityTitle` | string (2000) |
-| `initiatingContactID` | long |
-| `initiatingResourceID` | long |
-| `isActive` | boolean |
-| `isDeleted` | boolean |
-| `isTemplateJob` | boolean |
-| `notificationHistoryTypeID` | integer |
-| `notificationSentTime` | datetime |
-| `opportunityID` | long |
-| `projectID` | long |
-| `quoteID` | long |
-| `recipientDisplayName` | string (200) |
-| `recipientEmailAddress` | string (2000) |
-| `taskID` | long |
-| `templateName` | string (100) |
-| `ticketID` | long |
-| `timeEntryID` | long |
+| Field | Type | Notes |
+|---|---|---|
+| `companyID` | long | Companies |
+| `entityNumber` | string (50) |  |
+| `entityTitle` | string (2000) |  |
+| `initiatingContactID` | long | Contacts |
+| `initiatingResourceID` | long | Resources |
+| `isActive` | boolean |  |
+| `isDeleted` | boolean |  |
+| `isTemplateJob` | boolean |  |
+| `notificationHistoryTypeID` | integer |  |
+| `notificationSentTime` | datetime |  |
+| `opportunityID` | long | Opportunities |
+| `projectID` | long | Projects |
+| `quoteID` | long | Quotes |
+| `recipientDisplayName` | string (200) |  |
+| `recipientEmailAddress` | string (2000) |  |
+| `taskID` | long | Tasks |
+| `templateName` | string (100) |  |
+| `ticketID` | long | Tickets |
+| `timeEntryID` | long | TimeEntries |
 

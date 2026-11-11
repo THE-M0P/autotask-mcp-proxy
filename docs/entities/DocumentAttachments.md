@@ -21,19 +21,19 @@ This entity contains attachments for documents in Autotask.
 
 ## Fields (13)
 
-| Field | Type |
-|---|---|
-| `attachDate` | datetime |
-| `attachedByContactID` | long |
-| `attachedByResourceID` | long |
-| `attachmentType` | string (30) |
-| `contentType` | string (100) |
-| `documentID` | integer |
-| `errorCodes` | string (200) |
-| `fullPath` | string (255) |
-| `impersonatorCreatorResourceID` | integer |
-| `opportunityID` | long |
-| `parentAttachmentID` | integer |
-| `parentID` | long |
-| `title` | string (255) |
+| Field | Type | Notes |
+|---|---|---|
+| `attachDate` | datetime |  |
+| `attachedByContactID` | long | Contacts |
+| `attachedByResourceID` | long | Resources |
+| `attachmentType` | string (30) |  |
+| `contentType` | string (100) |  |
+| `documentID` | integer | Documents |
+| `errorCodes` | string (200) |  |
+| `fullPath` | string (255) |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | long | Opportunities |
+| `parentAttachmentID` | integer | AttachmentInfo (REST API) |
+| `parentID` | long |  |
+| `title` | string (255) |  |
 

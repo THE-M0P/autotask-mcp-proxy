@@ -19,10 +19,10 @@ Describes a cost associated with a Change Order to an Autotask Project. A cost i
 | `unitCost` | decimal | This entity field will return no information if the user account making the query does not have sufficient privileges to view cost data in the Autotask UI. Additionally, if an update request does not have the necessary permissions, the API will ignore the call's values for the field even if they are blank or would be otherwise required. |
 | `changeOrderHours` | decimal |  |
 | `chargeType` | integer |  |
-| `contractServiceBundleID` | integer |  |
-| `contractServiceID` | integer |  |
+| `contractServiceBundleID` | integer | ContractServiceBundles |
+| `contractServiceID` | integer | ContractServices |
 | `createDate` | datetime |  |
-| `creatorResourceID` | integer |  |
+| `creatorResourceID` | integer | Resources |
 | `datePurchased` | datetime |  |
 | `description` | string (2000) |  |
 | `internalPurchaseOrderNumber` | string (50) |  |
@@ -30,10 +30,10 @@ Describes a cost associated with a Change Order to an Autotask Project. A cost i
 | `isBilled` | boolean |  |
 | `name` | string (100) |  |
 | `notes` | string (2000) |  |
-| `organizationalLevelAssociationID` | integer |  |
+| `organizationalLevelAssociationID` | integer | OrganizationalLevelAssociations |
 | `purchaseOrderNumber` | string (50) |  |
 | `status` | integer |  |
-| `statusLastModifiedBy` | integer |  |
+| `statusLastModifiedBy` | integer | Resources |
 | `statusLastModifiedDate` | datetime |  |
 | `unitPrice` | decimal |  |
 | `unitQuantity` | decimal |  |

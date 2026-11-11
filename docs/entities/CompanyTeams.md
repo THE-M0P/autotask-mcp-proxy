@@ -11,5 +11,5 @@ Describes the resources associated with a Company Team. In Autotask, the account
 |---|---|---|
 | `resourceID` | long | resourceID cannot reference an API Only user or a Co-managed resource. |
 | `isAssociatedAsComanaged` | boolean | When this = true, the API cannot be used to remove/break/modify that record. |
-| `companyID` | long |  |
+| `companyID` | long | Companies |
 

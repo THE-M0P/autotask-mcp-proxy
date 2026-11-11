@@ -1,15 +1,14 @@
 # ResourceTimeOffApprovers
 
-About this entity The ResourceTimeOffApprovers entity identifies time off approvers for a resource and their approval level.
+The ResourceTimeOffApprovers entity identifies time off approvers for a resource and their approval level.
 
-- **Capabilities:** create — · update — · query — · delete —
+- **Capabilities:** create — · update — · query ✓ · delete —
 
-## Fields (4)
+## Fields (3)
 
-| Field | Type |
-|---|---|
-| `false` | false |
-| `approvalLevel` | Indicates the approver's approval level for the resource. An Autotask resource can have up to 3 levels of approvers. |
-| `approverResourceID` | The resource ID of the approver |
-| `resourceID` | The ID of the resource for whom time off is requested |
+| Field | Type | Notes |
+|---|---|---|
+| `approvalLevel` | integer | Indicates the approver's approval level for the resource. An Autotask resource can have up to 3 levels of approvers. |
+| `approverResourceID` | integer | The resource ID of the approver |
+| `resourceID` | integer | The ID of the resource for whom time off is requested |
 

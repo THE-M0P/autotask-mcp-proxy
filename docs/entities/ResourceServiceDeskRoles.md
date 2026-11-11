@@ -7,10 +7,10 @@ Describes the Resource - Service Desk Role association. Resource - Queue associa
 
 ## Fields (4)
 
-| Field | Type |
-|---|---|
-| `isActive` | Boolean |
-| `isDefault` | boolean |
-| `resourceID` | integer |
-| `roleID` | Integer |
+| Field | Type | Notes |
+|---|---|---|
+| `isActive` | Boolean |  |
+| `isDefault` | boolean |  |
+| `resourceID` | integer | Resources |
+| `roleID` | Integer | Roles |
 

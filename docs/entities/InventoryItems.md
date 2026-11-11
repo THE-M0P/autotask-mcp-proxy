@@ -27,8 +27,8 @@ Describes an Autotask product that is associated with an Inventory location in t
 | `quantityOnHand` | integer | quantityOnHand must be >= the quantity quantityPicked + quantity quantityReserved. For serialized products (that is, products that track a serial number): On create, quantityOnHand must = 0 (quantity for these inventory items is increased by creating InventoryItemSerialNumber entities). On update, quantityOnHand is Read-Only |
 | `backOrderQuantity` | integer |  |
 | `bin` | string (50) |  |
-| `impersonatorCreatorResourceID` | integer |  |
-| `productID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `productID` | integer | Products |
 | `quantityOnOrder` | integer |  |
 | `quantityPicked` | integer |  |
 | `quantityReserved` | integer |  |

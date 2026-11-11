@@ -16,20 +16,20 @@ This entity contains the attachments for the CompanyNotes entity. For more infor
 
 ## Fields (14)
 
-| Field | Type |
-|---|---|
-| `attachDate` | datetime |
-| `attachedByContactID` | long |
-| `attachedByResourceID` | long |
-| `attachmentType` | string (30) |
-| `companyID` | integer |
-| `companyNoteID` | integer |
-| `contentType` | string (100) |
-| `fullPath` | string (255) |
-| `impersonatorCreatorResourceID` | integer |
-| `opportunityID` | long |
-| `parentID` | long |
-| `publish` | integer |
-| `salesOrderID` | integer |
-| `title` | string (255) |
+| Field | Type | Notes |
+|---|---|---|
+| `attachDate` | datetime |  |
+| `attachedByContactID` | long | Contacts |
+| `attachedByResourceID` | long | Resources |
+| `attachmentType` | string (30) |  |
+| `companyID` | integer | Companies |
+| `companyNoteID` | integer | CompanyNotes |
+| `contentType` | string (100) |  |
+| `fullPath` | string (255) |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | integer | Opportunities |
+| `parentID` | long |  |
+| `publish` | integer |  |
+| `salesOrderID` | integer | SalesOrders |
+| `title` | string (255) |  |
 

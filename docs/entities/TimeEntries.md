@@ -36,21 +36,21 @@ Describes an Autotask Time Entry. A time entry allows an Autotask resource to en
 | `summaryNotes` | string (32000) | A ticket time entry must have summaryNotes. The summaryNotes field is required on tasks whether or not the system setting "Require user to enter summary notes when entering project task time and regular time" is enabled. When you use the API to update this field, the REST API will return the text-only version of its content. If you send the content back, the Rich Text and all images that it contains will be lost . You cannot use the API to create items that contain Rich Text, but you can add Rich Text later via a supported method. To learn more, refer to The Rich Text editor . |
 | `type` |  | To limit the return to only ticket time entries or only task time entries, you must specify a Type value. Picklist values for Type equal 2 (ITServiceRequest) for use with ticketID or 6 (ProjectTask) for use with taskID. |
 | `billingApprovalDateTime` | datetime |  |
-| `billingApprovalLevelMostRecent` | integer |  |
-| `billingApprovalResourceID` | integer |  |
-| `contractServiceBundleID` | long |  |
-| `contractServiceID` | long |  |
+| `billingApprovalLevelMostRecent` | integer | BillingItemApprovalLevels |
+| `billingApprovalResourceID` | integer | BillingItemApprovalLevels |
+| `contractServiceBundleID` | long | ContractServiceBundles |
+| `contractServiceID` | long | ContractServices |
 | `createDateTime` | datetime |  |
 | `creatorUserID` | integer |  |
 | `endDateTime` | datetime |  |
 | `hoursToBill` | decimal |  |
-| `impersonatorCreatorResourceID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
 | `lastModifiedDateTime` | datetime |  |
 | `lastModifiedUserID` | integer |  |
 | `offsetHours` | decimal |  |
-| `resourceID` | integer |  |
+| `resourceID` | integer | Resources |
 | `startDateTime` | datetime |  |
-| `taskID` | integer |  |
-| `ticketID` | integer |  |
+| `taskID` | integer | Tasks |
+| `ticketID` | integer | Tickets |
 | `timeEntryType` | integer |  |
 

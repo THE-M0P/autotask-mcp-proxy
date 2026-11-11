@@ -16,8 +16,8 @@ This entity represents associations between Knowledgebase articles within Autota
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `articleID` | integer |
-| `associatedArticleID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `articleID` | integer | KnowledgeBaseArticles |
+| `associatedArticleID` | integer | KnowledgeBaseArticles |
 

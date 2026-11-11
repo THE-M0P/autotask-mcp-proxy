@@ -21,18 +21,18 @@ Describes an Autotask Quote Item. Quote Items define a line item added to an Aut
 | `unitCost` | decimal | QuoteItem.unitCost must be ZERO (or not present), that is, there are no costs allowed on Setup Fees. This entity field will return no information if the user account making the query does not have sufficient privileges to view cost data in the Autotask UI. Additionally, if an update request does not have the necessary permissions, the API will ignore the call's values for the field even if they are blank or would be otherwise required. |
 | `description` | string (2000) |  |
 | `isOptional` | boolean |  |
-| `laborID` | integer |  |
+| `laborID` | integer | Roles |
 | `lineDiscount` | decimal |  |
 | `markupRate` | decimal |  |
 | `percentageDiscount` | decimal |  |
 | `periodType` | integer |  |
-| `productID` | integer |  |
+| `productID` | integer | Products |
 | `quantity` | decimal |  |
-| `quoteID` | integer |  |
+| `quoteID` | integer | Quotes |
 | `quoteItemType` | integer |  |
-| `serviceBundleID` | integer |  |
-| `serviceID` | integer |  |
-| `shippingID` | integer |  |
+| `serviceBundleID` | integer | ServiceBundles |
+| `serviceID` | integer | Services |
+| `shippingID` | integer | ShippingTypes |
 | `sortOrderID` | integer |  |
 | `unitDiscount` | decimal |  |
 | `unitPrice` | decimal |  |

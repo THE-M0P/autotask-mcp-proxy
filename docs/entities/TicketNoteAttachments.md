@@ -16,19 +16,19 @@ This entity contains the attachments for the TicketNotes entity. For more inform
 
 ## Fields (13)
 
-| Field | Type |
-|---|---|
-| `attachDate` | datetime |
-| `attachedByContactID` | long |
-| `attachedByResourceID` | long |
-| `attachmentType` | string (30) |
-| `contentType` | string (100) |
-| `fullPath` | string (255) |
-| `impersonatorCreatorResourceID` | integer |
-| `opportunityID` | long |
-| `parentID` | long |
-| `publish` | integer |
-| `ticketID` | integer |
-| `ticketNoteID` | integer |
-| `title` | string (255) |
+| Field | Type | Notes |
+|---|---|---|
+| `attachDate` | datetime |  |
+| `attachedByContactID` | long | Contacts |
+| `attachedByResourceID` | long | Resources |
+| `attachmentType` | string (30) |  |
+| `contentType` | string (100) |  |
+| `fullPath` | string (255) |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | long | Opportunities |
+| `parentID` | long |  |
+| `publish` | integer |  |
+| `ticketID` | integer | Tickets |
+| `ticketNoteID` | integer | TicketNotes |
+| `title` | string (255) |  |
 

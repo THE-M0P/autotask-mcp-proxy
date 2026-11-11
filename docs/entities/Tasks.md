@@ -33,12 +33,12 @@ Describes an Autotask Task. Tasks are associated with a Project and define work 
 | `projectID` | integer | On update, projectID cannot be changed. An error will be returned. projectID is validated only during create or update. |
 | `role` |  | Autotask allows a role to be inactivated. An attempt to create a Task using a Resource + role combination with an inactive role will trigger an error. You can update an existing Task if the Resource + role combination uses an inactive role. |
 | `status` | integer | When Task.status is set to isComplete (picklist value 5), the value of Task.remainingHours is set to 0 and cannot be updated. |
-| `assignedResourceID` | integer |  |
-| `assignedResourceroleID` | integer |  |
-| `completedByResourceID` | integer |  |
+| `assignedResourceID` | integer | Resources |
+| `assignedResourceroleID` | integer | Roles |
+| `completedByResourceID` | integer | Resources |
 | `completedDateTime` | datetime |  |
 | `createDateTime` | datetime |  |
-| `creatorResourceID` | integer |  |
+| `creatorResourceID` | integer | Resources |
 | `departmentID` | integer |  |
 | `description` | string (8000) |  |
 | `estimatedHours` | decimal |  |
@@ -46,8 +46,8 @@ Describes an Autotask Task. Tasks are associated with a Project and define work 
 | `hoursToBeScheduled` | decimal |  |
 | `isTaskBillable` | boolean |  |
 | `lastActivityDateTime` | datetime |  |
-| `lastActivityResourceID` | integer |  |
-| `phaseID` | integer |  |
+| `lastActivityResourceID` | integer | Resources |
+| `phaseID` | integer | Phases |
 | `purchaseOrderNumber` | string (50) |  |
 | `remainingHours` | decimal |  |
 | `startDateTime` | datetime |  |

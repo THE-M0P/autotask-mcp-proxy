@@ -20,11 +20,11 @@ Describes DNS records associated with the ConfigurationItems entity in Autotask.
 
 ## Fields (5)
 
-| Field | Type |
-|---|---|
-| `createDateTime` | datetime |
-| `data` | string (2000) |
-| `dnsType` | string (10) |
-| `installedProductID` | integer |
-| `timeToLiveSeconds` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `createDateTime` | datetime |  |
+| `data` | string (2000) |  |
+| `dnsType` | string (10) |  |
+| `installedProductID` | integer | ConfigurationItems |
+| `timeToLiveSeconds` | integer |  |
 

@@ -17,8 +17,11 @@
  */
 
 import { mkdirSync, writeFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
+
+// Exported for test.mjs (parsing is pure — no network in the unit tests).
+export { stripTags, rawCellAfterLabel, capabilities, description, children, urls, fields, toMarkdown };
 
 const BASE = 'https://autotask.net/DeveloperHelp/Content/APIs/REST';
 const OVERVIEW = `${BASE}/Entities/_EntitiesOverview.htm`;
@@ -68,11 +71,34 @@ function hasCheckmark(cellHtml) {
   return /CheckMark\.png/i.test(cellHtml);
 }
 
-/** Capability flags: the cell after each "Can X:" label holds a checkmark icon. */
+/**
+ * Capability flags. Two layouts exist:
+ *   A (most entities): "Can Create:" label in a <td>, value cell has CheckMark.png
+ *   B (a few, e.g. Companies/Resources): "Can Create" in a <th> header row, with a
+ *     values row below holding the text "true"/"false"
+ */
 function capabilities(html) {
-  const caps = {};
+  const caps = { create: false, delete: false, query: false, update: false };
+  // Layout A
   for (const cap of ['Create', 'Update', 'Query', 'Delete']) {
-    caps[cap.toLowerCase()] = hasCheckmark(rawCellAfterLabel(html, `Can ${cap}`));
+    if (hasCheckmark(rawCellAfterLabel(html, `Can ${cap}`))) caps[cap.toLowerCase()] = true;
+  }
+  // Layout B (only if A found nothing)
+  if (!Object.values(caps).some(Boolean)) {
+    const headerRe = /<tr[^>]*>\s*(?:<th[^>]*>[\s\S]*?<\/th>\s*)+<\/tr>/gi;
+    for (const hm of html.matchAll(headerRe)) {
+      const headers = [...hm[0].matchAll(/<th[^>]*>\s*Can (Create|Delete|Query|Update)\s*<\/th>/gi)]
+        .map((m) => m[1].toLowerCase());
+      if (!headers.length) continue;
+      const after = html.slice(hm.index + hm[0].length);
+      const rowMatch = after.match(/<tr[^>]*>([\s\S]*?)<\/tr>/i);
+      if (!rowMatch) continue;
+      const cells = [...rowMatch[1].matchAll(/<t[hd][^>]*>([\s\S]*?)<\/t[hd]>/gi)].map((c) => stripTags(c[1]));
+      headers.forEach((h, i) => {
+        if (i < cells.length && /^true/i.test(cells[i])) caps[h] = true;
+      });
+      break;
+    }
   }
   return caps;
 }
@@ -81,7 +107,9 @@ function capabilities(html) {
 function description(html) {
   const m = html.match(/<h1[\s\S]*?<\/h1>\s*(?:<p[^>]*>)?([\s\S]*?)(?:<\/p>|<div|<table)/i);
   if (!m) return '';
-  return stripTags(m[1]).replace(/^This entity describes/i, 'Describes');
+  return stripTags(m[1])
+    .replace(/^About this entity\s*/i, '')
+    .replace(/^This entity describes/i, 'Describes');
 }
 
 /** Child entity names: anchor links in the cell after "Children". */
@@ -98,24 +126,36 @@ function urls(html) {
     .filter((u) => u && /\(/.test(u));
 }
 
+// A cell is a field TYPE if it is EXACTLY one of Autotask's type tokens
+// (anchored both ends, so a description that merely starts with a type word
+// — e.g. "Currency on the Details panel…" — is not misread as the type).
+const TYPE_RE = /^(integer|decimal|long|boolean|datetime|double|float|picklist|text|longtext|currency|percent|time|date|string(\s*\(\d+\))?)$/i;
+
 /**
- * Field tables. Autotask uses TWO tables per entity:
- *   - a wide one:   [name, type, (padding…)]  → gives the type
- *   - a narrow one: [name, description]       → gives a note/condition
- * Merge both by field name.
+ * Field tables. Autotask uses up to TWO tables per entity, with two column
+ * layouts:
+ *   - [name, type, (padding…)]            → Layout A
+ *   - [name, description, type, (pad…)]   → Layout B
+ *   - a narrow [name, description]        → note/condition
+ * Detect the type cell by pattern (works for both layouts); any other
+ * non-padding cell is the note. Merge by field name.
  */
 function fields(html) {
   const rows = [...html.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)];
   const byName = new Map();
   for (const r of rows) {
-    const cells = [...r[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map((c) => c[1]);
+    const cells = [...r[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map((c) => stripTags(c[1]));
     if (cells.length < 2) continue;
-    const name = stripTags(cells[0]);
+    const name = cells[0];
     if (!/^[a-z][a-zA-Z0-9]{2,}$/.test(name)) continue;
-    const second = stripTags(cells[1]);
+    if (/^(true|false)$/.test(name)) continue; // capabilities values row, not a field
     const rec = byName.get(name) || { name, type: '', notes: '' };
-    if (cells.length >= 4) rec.type = second; // wide table → type
-    else if (!rec.notes) rec.notes = second; // narrow table → description
+    for (let i = 1; i < cells.length; i++) {
+      const c = cells[i];
+      if (!c) continue;
+      if (!rec.type && TYPE_RE.test(c)) rec.type = c;
+      else if (!rec.notes && c !== rec.type) rec.notes = c;
+    }
     byName.set(name, rec);
   }
   return [...byName.values()];
@@ -216,7 +256,10 @@ async function main() {
   }
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+// Only scrape when run directly (not when imported by test.mjs).
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
+}

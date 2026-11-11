@@ -16,10 +16,10 @@ This entity records existing associations between tags and Knowledgebase article
 
 ## Fields (4)
 
-| Field | Type |
-|---|---|
-| `articleID` | integer |
-| `createDateTime` | datetime |
-| `createdByResourceID` | integer |
-| `tagID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `articleID` | integer | KnowledgeBaseArticles |
+| `createDateTime` | datetime |  |
+| `createdByResourceID` | integer | Resources |
+| `tagID` | integer | Tags |
 

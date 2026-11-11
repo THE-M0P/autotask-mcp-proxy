@@ -18,13 +18,13 @@ This entity represents ticket and article tags in Autotask.
 
 ## Fields (7)
 
-| Field | Type |
-|---|---|
-| `createDateTime` | datetime |
-| `isActive` | boolean |
-| `isExcludedFromAutomaticTagging` | boolean |
-| `isSystem` | boolean |
-| `label` | string (50) |
-| `lastModifiedDateTime` | datetime |
-| `tagGroupID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `createDateTime` | datetime |  |
+| `isActive` | boolean |  |
+| `isExcludedFromAutomaticTagging` | boolean |  |
+| `isSystem` | boolean |  |
+| `label` | string (50) |  |
+| `lastModifiedDateTime` | datetime |  |
+| `tagGroupID` | integer | TagGroups |
 

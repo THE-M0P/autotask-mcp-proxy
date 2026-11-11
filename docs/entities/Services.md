@@ -10,10 +10,10 @@ Describes a deliverable item that represents a pre-defined unit of work performe
 | Field | Type | Notes |
 |---|---|---|
 | `unitCost` | decimal | This entity field will return no information if the user account making the query does not have sufficient privileges to view cost data in the Autotask UI. Additionally, if an update request does not have the necessary permissions, the API will ignore the call's values for the field even if they are blank or would be otherwise required. |
-| `billingCodeID` | integer |  |
+| `billingCodeID` | integer | ProjectCharges |
 | `catalogNumberPartNumber` | string (50) |  |
 | `createDate` | datetime |  |
-| `creatorResourceID` | integer |  |
+| `creatorResourceID` | integer | Resources |
 | `description` | string (400) |  |
 | `externalID` | string (50) |  |
 | `internalID` | string (50) |  |
@@ -28,7 +28,7 @@ Describes a deliverable item that represents a pre-defined unit of work performe
 | `serviceLevelAgreementID` | long |  |
 | `sku` | string (50) |  |
 | `unitPrice` | decimal |  |
-| `updateResourceID` | integer |  |
+| `updateResourceID` | integer | Resources |
 | `url` | string (500) |  |
-| `vendorCompanyID` | integer |  |
+| `vendorCompanyID` | integer | Companies |
 

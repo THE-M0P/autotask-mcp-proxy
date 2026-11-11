@@ -7,8 +7,8 @@ Describes a billing Role that has been excluded from a Contract; that is, time e
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `contractID` | long |
-| `roleID` | long |
+| Field | Type | Notes |
+|---|---|---|
+| `contractID` | long | Contracts |
+| `roleID` | long | Roles |
 

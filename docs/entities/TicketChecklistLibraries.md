@@ -7,8 +7,8 @@ This entity allows all items in a checklist library to be added to a ticket. If 
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `checklistLibraryID` | integer |
-| `ticketID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `checklistLibraryID` | integer | ChecklistLibraries |
+| `ticketID` | integer | Tickets |
 

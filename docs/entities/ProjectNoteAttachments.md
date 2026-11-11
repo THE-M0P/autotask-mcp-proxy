@@ -16,23 +16,23 @@ This entity contains the attachments for the ProjectNotes entity. For more infor
 
 ## Fields (17)
 
-| Field | Type |
-|---|---|
-| `attachDate` | datetime |
-| `attachedByContactID` | long |
-| `attachedByResourceID` | long |
-| `attachmentType` | string (30) |
-| `contentType` | string (100) |
-| `creatorType` | integer |
-| `data` | byte |
-| `fileSize` | long |
-| `fullPath` | string (255) |
-| `impersonatorCreatorResourceID` | integer |
-| `opportunityID` | long |
-| `parentAttachmentID` | integer |
-| `parentID` | long |
-| `projectID` | integer |
-| `projectNoteID` | integer |
-| `publish` | integer |
-| `title` | string (255) |
+| Field | Type | Notes |
+|---|---|---|
+| `attachDate` | datetime |  |
+| `attachedByContactID` | long | Contacts |
+| `attachedByResourceID` | long | Resources |
+| `attachmentType` | string (30) |  |
+| `contentType` | string (100) |  |
+| `creatorType` | integer |  |
+| `data` |  | byte |
+| `fileSize` | long |  |
+| `fullPath` | string (255) |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | long | Opportunities |
+| `parentAttachmentID` | integer | AttachmentInfo (REST API) |
+| `parentID` | long |  |
+| `projectID` | integer | Projects |
+| `projectNoteID` | integer | ProjectNotes |
+| `publish` | integer |  |
+| `title` | string (255) |  |
 

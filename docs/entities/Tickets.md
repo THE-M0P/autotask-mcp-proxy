@@ -52,32 +52,32 @@ Describes an Autotask Ticket. Tickets define service requests within the Autotas
 | `ticketNumber` | string (50) | On create , you can specify a ticket number prefix for this resource. The prefix must follow the format ' T YYYYMMDD.' For example, 'T20200615.' The 'YYYYMMDD' value must be a date less than or equal to today's date. If the API receives an invalid prefix, it will automatically generate one and assign it to the resource. You cannot change a resource's ticket number prefix once created. Autotask will automatically assign the record number that follows the prefix. For example, 'T20200615.0674.' |
 | `ticketType` | integer | Tickets with no ticketType specified are set automatically to Service Request. Tickets where Type = Service Request cannot be associated with a ProblemTicket ID. If ticketType = Service Request and the ticket also specifies a problemTicketId, the ticket type is updated to Service Request. An error message indicates that Service Request tickets cannot be associated with a problem ticket. ticketType must = Incident before the ticket can be associated with a problemTicketId. If ticketType = Problem and incidents are associated with the ticket, ticketType cannot be changed to Incident or Service Request until the incidents are disassociated from the ticket. You cannot create a ticket with ticketType = Problem and specify a ProblemTicket ID or specify problemTicketId for an existing Ticket with ticketType=Problem; that is, a ticket that is already a problem ticket cannot become an incident to another problem ticket. If ticketType = ChangeRequest, problemTicketId cannot have a value. If a ticket has ticketType not equal to 'Change Request' and it has data in one or more the fields that are exclusive to Change Request tickets, then the ticket can be saved. Although the data will remain intact and will be reportable, it will not be viewable in the ticket in Autotask. This includes the following fields: changeApprovalBoard, changeApprovalType, changeApprovalStatus, changeInfoField1, changeInfoField2, changeInfoField3, changeInfoField4, changeInfoField5. The ChangeManagement module must be enabled to create a new ticket with ticketType = Change Request. Any existing Change Request tickets can be edited. Other fields related to change request will accept values when Change Management is not enabled, but that data will not be available through the UI. If the ticket catgeory = 'RMA', the ticketType is set to 'Change Request', regardless of the value that is supplied. |
 | `apiVendorID` | integer |  |
-| `assignedResourceID` | integer |  |
+| `assignedResourceID` | integer | Resources |
 | `changeInfoField1` | string (8000) |  |
 | `changeInfoField2` | string (8000) |  |
 | `changeInfoField3` | string (8000) |  |
 | `changeInfoField4` | string (8000) |  |
 | `changeInfoField5` | string (8000) |  |
-| `companylocationID` | integer |  |
-| `completedByResourceID` | integer |  |
+| `companylocationID` | integer | CompanyLocations |
+| `completedByResourceID` | integer | Resources |
 | `completedDate` | datetime |  |
-| `contractServiceBundleID` | long |  |
-| `contractServiceID` | long |  |
+| `contractServiceBundleID` | long | ContractServiceBundles |
+| `contractServiceID` | long | ContractServices |
 | `createDate` | datetime |  |
-| `createdByContactID` | integer |  |
+| `createdByContactID` | integer | Contacts |
 | `creatorType` | integer |  |
 | `currentServiceThermometerRating` | integer |  |
 | `estimatedHours` | decimal |  |
 | `externalID` | string (50) |  |
-| `firstResponseAssignedResourceID` | integer |  |
+| `firstResponseAssignedResourceID` | integer | Resources |
 | `firstResponseDateTime` | datetime |  |
 | `firstResponseDueDateTime` | datetime |  |
-| `firstResponseInitiatingResourceID` | integer |  |
+| `firstResponseInitiatingResourceID` | integer | Resources |
 | `hoursToBeScheduled` | decimal |  |
-| `impersonatorCreatorResourceID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
 | `issueType` | integer |  |
 | `lastActivityDate` | datetime |  |
-| `lastActivityResourceID` | integer |  |
+| `lastActivityResourceID` | integer | Resources |
 | `lastCustomerNotificationDateTime` | datetime |  |
 | `lastCustomerVisibleActivityDateTime` | datetime |  |
 | `previousServiceThermometerRating` | integer |  |

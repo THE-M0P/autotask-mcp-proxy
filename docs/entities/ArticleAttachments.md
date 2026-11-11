@@ -16,19 +16,19 @@ This entity contains attachments for Knowledgebase articles in Autotask.
 
 ## Fields (13)
 
-| Field | Type |
-|---|---|
-| `articleID` | integer |
-| `attachDate` | datetime |
-| `attachedByContactID` | long |
-| `attachedByResourceID` | long |
-| `attachmentType` | string (30) |
-| `contentType` | string (100) |
-| `errorCodes` | string (200) |
-| `fullPath` | string (255) |
-| `impersonatorCreatorResourceID` | integer |
-| `opportunityID` | long |
-| `parentAttachmentID` | integer |
-| `parentID` | long |
-| `title` | string (255) |
+| Field | Type | Notes |
+|---|---|---|
+| `articleID` | integer | KnowledgeBaseArticles |
+| `attachDate` | datetime |  |
+| `attachedByContactID` | long | Contacts |
+| `attachedByResourceID` | long | Resources |
+| `attachmentType` | string (30) |  |
+| `contentType` | string (100) |  |
+| `errorCodes` | string (200) |  |
+| `fullPath` | string (255) |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | long | Opportunities |
+| `parentAttachmentID` | integer | AttachmentInfo (REST API) |
+| `parentID` | long |  |
+| `title` | string (255) |  |
 

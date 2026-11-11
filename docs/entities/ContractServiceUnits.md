@@ -15,11 +15,11 @@ Describes the number of units of a specific service that are associated with a R
 | `unitCost` |  | This entity field will return no information if the user account making the query does not have sufficient privileges to view cost data in the Autotask UI. Additionally, if an update request does not have the necessary permissions, the API will ignore the call's values for the field even if they are blank or would be otherwise required. |
 | `units` | integer | When the number of units for a period is 0, the query response will not return this entity. |
 | `approveAndPostDate` | datetime |  |
-| `contractID` | integer |  |
-| `contractServiceID` | integer |  |
+| `contractID` | integer | Contracts |
+| `contractServiceID` | integer | ContractServices |
 | `endDate` | datetime |  |
-| `organizationalLevelAssociationID` | integer |  |
-| `serviceID` | integer |  |
+| `organizationalLevelAssociationID` | integer | OrganizationalLevelAssociations |
+| `serviceID` | integer | Services |
 | `startDate` | datetime |  |
-| `vendorCompanyID` | integer |  |
+| `vendorCompanyID` | integer | Companies |
 

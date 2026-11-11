@@ -7,8 +7,8 @@ NOTE This entity works in combination with the Service Call and Service Call-rel
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `resourceID` | integer |
-| `serviceCallTicketID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `resourceID` | integer | Resources |
+| `serviceCallTicketID` | integer | ServiceCallTasks |
 

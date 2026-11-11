@@ -17,8 +17,8 @@ NOTE This entity works in combination with the Service Call and other Service Ca
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `serviceCallID` | integer |
-| `taskID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `serviceCallID` | integer | ServiceCalls |
+| `taskID` | integer | Tasks |
 

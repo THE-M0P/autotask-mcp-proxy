@@ -17,8 +17,8 @@ NOTE This entity works in combination with the Service Call and Service Call-rel
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `serviceCallID` | integer |
-| `ticketID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `serviceCallID` | integer | ServiceCalls |
+| `ticketID` | integer | Tickets |
 

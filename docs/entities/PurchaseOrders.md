@@ -32,19 +32,19 @@ Describes an Autotask Inventory module Purchase Order. Purchase orders allow use
 | `additionalVendorInvoiceNumbers` | string (8000) |  |
 | `cancelDateTime` | datetime |  |
 | `createDateTime` | datetime |  |
-| `creatorResourceID` | integer |  |
+| `creatorResourceID` | integer | Resources |
 | `externalPONumber` | string (50) |  |
 | `fax` | string (25) |  |
 | `generalMemo` | string (4000) |  |
-| `impersonatorCreatorResourceID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
 | `internalCurrencyFreight` | decimal |  |
 | `latestEstimatedArrivalDate` | datetime |  |
 | `paymentTerm` | integer |  |
 | `phone` | string (25) |  |
-| `purchaseForCompanyID` | integer |  |
+| `purchaseForCompanyID` | integer | Companies |
 | `purchaseOrderNumber` | string (50) |  |
 | `shippingDate` | datetime |  |
-| `shippingType` | integer |  |
+| `shippingType` | integer | ShippingTypes |
 | `shipToAddress1` | string (128) |  |
 | `shipToAddress2` | string (128) |  |
 | `shipToCity` | string (30) |  |

@@ -7,11 +7,11 @@ This query only entity describes Resources' associations to Department/ Role rel
 
 ## Fields (5)
 
-| Field | Type |
-|---|---|
-| `departmentID` | long |
-| `isActive` | boolean |
-| `queueID` | long |
-| `resourceID` | long |
-| `roleID` | long |
+| Field | Type | Notes |
+|---|---|---|
+| `departmentID` | long | Departments |
+| `isActive` | boolean |  |
+| `queueID` | long |  |
+| `resourceID` | long | Resources |
+| `roleID` | long | Roles |
 

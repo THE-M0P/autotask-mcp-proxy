@@ -19,22 +19,22 @@ Describes an Autotask Subscription. Subscriptions are used to create recurring b
 
 ## Fields (16)
 
-| Field | Type |
-|---|---|
-| `configurationItemID` | integer |
-| `description` | string (2000) |
-| `effectiveDate` | datetime |
-| `expirationDate` | datetime |
-| `impersonatorCreatorResourceID` | integer |
-| `materialCodeID` | integer |
-| `organizationalLevelAssociationID` |  |
-| `periodCost` | Decimal |
-| `periodPrice` | Decimal |
-| `periodType` | integer |
-| `purchaseOrderNumber` | string (50) |
-| `status` | integer |
-| `subscriptionName` | string (100) |
-| `totalCost` | Decimal |
-| `totalPrice` | Decimal |
-| `vendorID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `configurationItemID` | integer | ConfigurationItems |
+| `description` | string (2000) |  |
+| `effectiveDate` | datetime |  |
+| `expirationDate` | datetime |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `materialCodeID` | integer | ProjectCharges |
+| `organizationalLevelAssociationID` |  |  |
+| `periodCost` | Decimal |  |
+| `periodPrice` | Decimal |  |
+| `periodType` | integer |  |
+| `purchaseOrderNumber` | string (50) |  |
+| `status` | integer |  |
+| `subscriptionName` | string (100) |  |
+| `totalCost` | Decimal |  |
+| `totalPrice` | Decimal |  |
+| `vendorID` | integer | Companies |
 

@@ -20,8 +20,8 @@ This entity contains SSL Subject Alternative Name (SAN) records associated with 
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `configurationItemID` | integer |
-| `name` | string (255) |
+| Field | Type | Notes |
+|---|---|---|
+| `configurationItemID` | integer | ConfigurationItems |
+| `name` | string (255) |  |
 

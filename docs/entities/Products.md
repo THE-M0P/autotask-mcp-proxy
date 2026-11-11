@@ -27,14 +27,14 @@ Describes an instance of hardware, software, or a material item in Autotask that
 | `priceCostMethod` | integer | If no value is provided, this field will default to Standard. If the product's Price/Cost Method is Standard, Product Tiers cannot be created. |
 | `productBillingCodeID` | integer | This field has been deprecated. chargeBillingCodeID needs to be used in place of productBillingCodeID. |
 | `unitCost` | decimal | This entity field will return no information if the user account making the query does not have sufficient privileges to view cost data in the Autotask UI. Additionally, if an update request does not have the necessary permissions, the API will ignore the call's values for the field even if they are blank or would be otherwise required. |
-| `chargeBillingCodeID` | integer |  |
-| `createdByResourceID` | integer |  |
+| `chargeBillingCodeID` | integer | BillingCodes |
+| `createdByResourceID` | integer | Resources |
 | `createdTime` | datetime |  |
-| `defaultInstalledProductCategoryID` | integer |  |
-| `defaultVendorID` | integer |  |
+| `defaultInstalledProductCategoryID` | integer | ConfigurationItemCategories |
+| `defaultVendorID` | integer | Companies |
 | `description` | string (8000) |  |
 | `externalProductID` | string (50) |  |
-| `impersonatorCreatorResourceID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
 | `isActive` | boolean |  |
 | `isEligibleForRma` | boolean |  |
 | `link` | string (500) |  |

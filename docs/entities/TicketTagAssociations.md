@@ -16,8 +16,8 @@ This entity manages the tags associated with tickets in Autotask.
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `tagID` | integer |
-| `ticketID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `tagID` | integer | Tags |
+| `ticketID` | integer | Tickets |
 

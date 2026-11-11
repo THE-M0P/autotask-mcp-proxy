@@ -11,10 +11,10 @@ Describes notes created by an Autotask user and associated with an Asset entity.
 |---|---|---|
 | `configurationItemID` | integer | Editable on creation of the ConfigurationItemNote (but not afterword) |
 | `createDateTime` | datetime |  |
-| `creatorResourceID` | integer |  |
+| `creatorResourceID` | integer | Resources |
 | `description` | string (32000) |  |
-| `impersonatorCreatorResourceID` | integer |  |
-| `impersonatorUpdaterResourceID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `impersonatorUpdaterResourceID` | integer | Resources |
 | `lastActivityDate` | datetime |  |
 | `noteType` | integer |  |
 | `title` | string (250) |  |

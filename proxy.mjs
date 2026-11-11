@@ -309,7 +309,7 @@ export function searchDocs(query, maxResults = 3) {
       if (name.toLowerCase().includes(t)) score += 5;
     }
     if (score > 0) {
-      if (!name.startsWith('entities/') && !isFieldQuery) score += 12;
+      if (!name.startsWith('entities/') && !isFieldQuery) score += 20;
       scored.push({ name, score, snippet: firstSnippet(content) });
     }
   }

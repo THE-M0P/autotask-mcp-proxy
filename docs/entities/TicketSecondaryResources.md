@@ -7,9 +7,9 @@ Describes a secondary resource assigned to a Ticket. Secondary resources are dif
 
 ## Fields (3)
 
-| Field | Type |
-|---|---|
-| `resourceID` | long |
-| `roleID` | long |
-| `ticketID` | long |
+| Field | Type | Notes |
+|---|---|---|
+| `resourceID` | long | Resources |
+| `roleID` | long | Roles |
+| `ticketID` | long | Tickets |
 

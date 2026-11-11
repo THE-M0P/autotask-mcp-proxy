@@ -16,8 +16,8 @@ This entity contains existing associations between Knowledgebase articles and as
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `articleID` | integer |
-| `installedProductCategoryID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `articleID` | integer | KnowledgeBaseArticles |
+| `installedProductCategoryID` | integer | ConfigurationItemCategories |
 

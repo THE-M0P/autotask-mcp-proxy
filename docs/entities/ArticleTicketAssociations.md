@@ -16,8 +16,8 @@ This entity records existing associations between tickets and Knowledgebase arti
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `articleID` | integer |
-| `ticketID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `articleID` | integer | KnowledgeBaseArticles |
+| `ticketID` | integer | Tickets |
 

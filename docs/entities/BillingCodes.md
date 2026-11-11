@@ -19,7 +19,7 @@ The BillingCodes entity describes an Autotask Allocation Code (called Billing Co
 | `isExcludedFromNewContracts` | boolean |  |
 | `markupRate` | decimal |  |
 | `name` | string (200) |  |
-| `taxCategoryID` | integer |  |
+| `taxCategoryID` | integer | TaxCategories |
 | `unitCost` | decimal |  |
 | `unitPrice` | decimal |  |
 | `useType` | integer |  |

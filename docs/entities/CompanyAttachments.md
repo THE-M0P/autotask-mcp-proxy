@@ -7,21 +7,21 @@ This entity contains the attachments for the Companies entity. For more informat
 
 ## Fields (15)
 
-| Field | Type |
-|---|---|
-| `attachDate` | datetime |
-| `attachedByContactID` | long |
-| `attachedByResourceID` | long |
-| `attachmentType` | string |
-| `companyID` | integer |
-| `companyNoteID` | integer |
-| `contentType` | string |
-| `fullPath` | string |
-| `impersonatorCreatorResourceID` | integer |
-| `opportunityID` | integer |
-| `parentAttachmentID` | integer |
-| `parentID` | long |
-| `publish` | integer |
-| `salesOrderID` | integer |
-| `title` | string |
+| Field | Type | Notes |
+|---|---|---|
+| `attachDate` | datetime |  |
+| `attachedByContactID` | long | Contacts |
+| `attachedByResourceID` | long | Resources |
+| `attachmentType` | string |  |
+| `companyID` | integer | Companies |
+| `companyNoteID` | integer | CompanyNotes |
+| `contentType` | string |  |
+| `fullPath` | string |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | long | Opportunities |
+| `parentAttachmentID` | integer | Multiple; varies based on parent. |
+| `parentID` | long |  |
+| `publish` | integer |  |
+| `salesOrderID` | integer | SalesOrders |
+| `title` | string |  |
 

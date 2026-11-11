@@ -16,19 +16,19 @@ This entity contains the attachments for the ContractNotes entity. For more info
 
 ## Fields (13)
 
-| Field | Type |
-|---|---|
-| `attachDate` | datetime |
-| `attachedByContactID` | long |
-| `attachedByResourceID` | long |
-| `attachmentType` | string (30) |
-| `contentType` | string (100) |
-| `contractNoteID` | integer |
-| `contractID` | integer |
-| `fullPath` | string (255) |
-| `impersonatorCreatorResourceID` | integer |
-| `opportunityID` | long |
-| `parentID` | long |
-| `publish` | integer |
-| `title` | string (255) |
+| Field | Type | Notes |
+|---|---|---|
+| `attachDate` | datetime |  |
+| `attachedByContactID` | long | Contacts |
+| `attachedByResourceID` | long | Resources |
+| `attachmentType` | string (30) |  |
+| `contentType` | string (100) |  |
+| `contractNoteID` | integer | ContractNotes |
+| `contractID` | integer | Contracts |
+| `fullPath` | string (255) |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | long | Opportunities |
+| `parentID` | long |  |
+| `publish` | integer |  |
+| `title` | string (255) |  |
 

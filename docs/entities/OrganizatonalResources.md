@@ -7,8 +7,8 @@ When the Organizational Structure feature is enabled in Autotask, this entity de
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `organizationalLevelAssociationID` | integer |
-| `resourceID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `organizationalLevelAssociationID` | integer | OrganizatonalResources |
+| `resourceID` | integer | Resources |
 

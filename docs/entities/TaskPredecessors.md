@@ -7,9 +7,9 @@ Describes a predecessor/successor arrangement between two project schedule items
 
 ## Fields (3)
 
-| Field | Type |
-|---|---|
-| `lagDays` | integer |
-| `predecessorTaskID` | integer |
-| `successorTaskID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `lagDays` | integer |  |
+| `predecessorTaskID` | integer | Tasks |
+| `successorTaskID` | integer | Tasks |
 

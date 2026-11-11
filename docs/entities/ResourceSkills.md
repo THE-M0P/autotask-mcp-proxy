@@ -7,10 +7,10 @@ Describes skills associated with an Autotask Resource. When assigning tickets vi
 
 ## Fields (4)
 
-| Field | Type |
-|---|---|
-| `resourceID` | long |
-| `skillDescription` | string (2000) |
-| `skillID` | long |
-| `skillLevel` | long |
+| Field | Type | Notes |
+|---|---|---|
+| `resourceID` | long | Resources |
+| `skillDescription` | string (2000) |  |
+| `skillID` | long | Skills |
+| `skillLevel` | long |  |
 

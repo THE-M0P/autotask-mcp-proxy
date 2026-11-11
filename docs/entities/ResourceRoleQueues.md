@@ -7,8 +7,8 @@ Describes a Resource - Queue relationship.
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `queueID` | integer |
-| `resourceID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `queueID` | integer |  |
+| `resourceID` | integer | Resources |
 

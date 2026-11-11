@@ -16,8 +16,8 @@ This entity represents aliases for ticket and article tags in Autotask.
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `alias` | string (50) |
-| `tagID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `alias` | string (50) |  |
+| `tagID` | integer | Tags |
 

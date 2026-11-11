@@ -12,13 +12,13 @@ The CompanyNotes entity describes any sort of note created by an Autotask user a
 | `contactID` | integer | contactID must reference an isActive Autotask Contact that is associated with the Company referenced by the companyID field or from the parentCompany of the Company referenced by companyID. |
 | `opportunityID` | integer | opportunityID must reference an isActive Autotask Opportunity associated with the Company referenced by the companyID field. |
 | `actionType` | integer |  |
-| `assignedResourceID` | integer |  |
-| `companyID` | integer |  |
+| `assignedResourceID` | integer | Resources |
+| `companyID` | integer | Companies |
 | `completedDateTime` | datetime |  |
 | `createDateTime` | datetime |  |
 | `endDateTime` | datetime |  |
-| `impersonatorCreatorResourceID` | integer |  |
-| `impersonatorUpdaterResourceID` | integer |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `impersonatorUpdaterResourceID` | integer | Resources |
 | `lastModifiedDate` | datetime |  |
 | `name` | string (128) |  |
 | `note` | string (32000) |  |

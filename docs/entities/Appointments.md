@@ -7,14 +7,14 @@ The Appointments entity describes an Autotask Appointment, that is, scheduled ti
 
 ## Fields (8)
 
-| Field | Type |
-|---|---|
-| `createDateTime` | datetime |
-| `creatorResourceID` | integer |
-| `description` | string (8000) |
-| `endDateTime` | datetime |
-| `resourceID` | integer |
-| `startDateTime` | datetime |
-| `title` | string (256) |
-| `updateDateTime` | datetime |
+| Field | Type | Notes |
+|---|---|---|
+| `createDateTime` | datetime |  |
+| `creatorResourceID` | integer | Resources |
+| `description` | string (8000) |  |
+| `endDateTime` | datetime |  |
+| `resourceID` | integer | Resources |
+| `startDateTime` | datetime |  |
+| `title` | string (256) |  |
+| `updateDateTime` | datetime |  |
 

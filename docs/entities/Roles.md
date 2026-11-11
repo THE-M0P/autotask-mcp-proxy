@@ -7,15 +7,15 @@ Describes an Autotask Role. Roles are associated with a department and have a st
 
 ## Fields (9)
 
-| Field | Type |
-|---|---|
-| `description` | string (200) |
-| `hourlyFactor` | decimal |
-| `hourlyRate` | decimal |
-| `isActive` | boolean |
-| `isExcludedFromNewContracts` | boolean |
-| `isSystemRole` | boolean |
-| `name` | string (200) |
-| `quoteItemDefaultTaxCategoryId` | integer |
-| `roleType` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `description` | string (200) |  |
+| `hourlyFactor` | decimal |  |
+| `hourlyRate` | decimal |  |
+| `isActive` | boolean |  |
+| `isExcludedFromNewContracts` | boolean |  |
+| `isSystemRole` | boolean |  |
+| `name` | string (200) |  |
+| `quoteItemDefaultTaxCategoryId` | integer | TaxCategories |
+| `roleType` | integer |  |
 

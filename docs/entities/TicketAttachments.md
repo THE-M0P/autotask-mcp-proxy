@@ -7,21 +7,21 @@ This entity contains the attachments for the Tickets entity. For more informatio
 
 ## Fields (15)
 
-| Field | Type |
-|---|---|
-| `attachDate` | datetime |
-| `attachedByContactID` | long |
-| `attachedByResourceID` | long |
-| `attachmentType` | string |
-| `contentType` | string |
-| `fullPath` | string |
-| `impersonatorCreatorResourceID` | integer |
-| `opportunityID` | long |
-| `parentAttachmentID` | integer |
-| `parentID` | long |
-| `publish` | integer |
-| `ticketID` | integer |
-| `ticketNoteID` | integer |
-| `timeEntryID` | integer |
-| `title` | string |
+| Field | Type | Notes |
+|---|---|---|
+| `attachDate` | datetime |  |
+| `attachedByContactID` | long | Contacts |
+| `attachedByResourceID` | long | Resources |
+| `attachmentType` | string |  |
+| `contentType` | string |  |
+| `fullPath` | string |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | long | Opportunities |
+| `parentAttachmentID` | integer | Multiple; varies based on parent. |
+| `parentID` | long |  |
+| `publish` | integer |  |
+| `ticketID` | integer | TicketAttachments |
+| `ticketNoteID` | integer | TicketNotes |
+| `timeEntryID` | integer | TimeEntries |
+| `title` | string |  |
 

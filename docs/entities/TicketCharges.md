@@ -20,18 +20,18 @@ Describes a cost associated with an Autotask Ticket. A cost is a billing item fo
 | `unitCost` | decimal | This entity field will return no information if the user account making the query does not have sufficient privileges to view cost data in the Autotask UI. Additionally, if an update request does not have the necessary permissions, the API will ignore the call's values for the field even if they are blank or would be otherwise required. |
 | `unitPrice` | decimal | This field will not be queryable if the API user does not have the Can view sensitive Charge data system security setting. |
 | `chargeType` | integer |  |
-| `contractServiceBundleID` | long |  |
-| `contractServiceID` | long |  |
+| `contractServiceBundleID` | long | ContractServiceBundles |
+| `contractServiceID` | long | ContractServices |
 | `costType` | integer |  |
 | `createDate` | datetime |  |
-| `creatorResourceID` | long |  |
+| `creatorResourceID` | long | Resources |
 | `datePurchased` | datetime |  |
 | `description` | string (8000) |  |
 | `internalPurchaseOrderNumber` | string (50) |  |
 | `isBilled` | boolean |  |
 | `name` | string (100) |  |
 | `notes` | string (2000) |  |
-| `organizationalLevelAssociationID` | integer |  |
+| `organizationalLevelAssociationID` | integer | OrganizationalLevelAssociations |
 | `purchaseOrderNumber` | string (50) |  |
 | `statusLastModifiedBy` | long |  |
 | `statusLastModifiedDate` | datetime |  |

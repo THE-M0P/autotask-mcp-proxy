@@ -7,11 +7,11 @@ The ContractBlockHourFactors entity describes an Autotask Block Hour Factor, an 
 
 ## Fields (5)
 
-| Field | Type |
-|---|---|
-| `blockHourMultiplier` | decimal |
-| `contractHourlyRate` | decimal |
-| `contractID` | integer |
-| `internalCurrencyContractHourlyRate` | decimal |
-| `roleID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `blockHourMultiplier` | decimal |  |
+| `contractHourlyRate` | decimal |  |
+| `contractID` | integer | Contracts |
+| `internalCurrencyContractHourlyRate` | decimal |  |
+| `roleID` | integer | Roles |
 

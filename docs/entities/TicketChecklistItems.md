@@ -7,14 +7,14 @@ Describes list items added to a check list on an Autotask ticket. A checklist is
 
 ## Fields (8)
 
-| Field | Type |
-|---|---|
-| `completedByResourceID` | integer |
-| `completedDateTime` | datetime |
-| `isCompleted` | boolean |
-| `isImportant` | boolean |
-| `itemName` | string (600) |
-| `knowledgebaseArticleID` | integer |
-| `position` | integer |
-| `ticketID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `completedByResourceID` | integer | Resources |
+| `completedDateTime` | datetime |  |
+| `isCompleted` | boolean |  |
+| `isImportant` | boolean |  |
+| `itemName` | string (600) |  |
+| `knowledgebaseArticleID` | integer |  |
+| `position` | integer |  |
+| `ticketID` | integer | Tickets |
 

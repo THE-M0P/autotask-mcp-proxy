@@ -7,9 +7,9 @@ This entity represents the relationship between an asset category and a specific
 
 ## Fields (3)
 
-| Field | Type |
-|---|---|
-| `configurationItemCategoryID` | integer |
-| `isRequired` | boolean |
-| `userDefinedFieldDefinitionID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `configurationItemCategoryID` | integer | ConfigurationItemCategories |
+| `isRequired` | boolean |  |
+| `userDefinedFieldDefinitionID` | integer | UserDefinedFieldDefinitions |
 

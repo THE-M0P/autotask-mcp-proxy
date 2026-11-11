@@ -7,11 +7,11 @@ Describes list items added to a check list on an Autotask ticket or task. A chec
 
 ## Fields (5)
 
-| Field | Type |
-|---|---|
-| `checklistLibraryID` | integer |
-| `isImportant` | boolean |
-| `itemName` | string (600) |
-| `knowledgebaseArticleID` | integer |
-| `position` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `checklistLibraryID` | integer | ChecklistLibraries |
+| `isImportant` | boolean |  |
+| `itemName` | string (600) |  |
+| `knowledgebaseArticleID` | integer |  |
+| `position` | integer |  |
 

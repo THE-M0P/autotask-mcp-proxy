@@ -16,6 +16,6 @@ Describes a transaction where a specified quantity of one InventoryItem entity i
 | `toLocationID` | long | toLocationID cannot be = to fromLocationID. toLocationID must reference an active Inventory location. |
 | `updateNote` | string (500) | If an Inventory Item's On Hand quantity is updated by the API, an update note is written. The Update Reason will be "Updated using Web Services API." The Updated By User value will be the user that performed the update (via the API). |
 | `notes` | string (4000) |  |
-| `transferByResourceID` | integer |  |
+| `transferByResourceID` | integer | Resources |
 | `transferDate` | datetime |  |
 

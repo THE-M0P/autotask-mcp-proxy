@@ -7,8 +7,8 @@ Describes a Work Type billing (or allocation) code that has been excluded from a
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `billingCodeID` | long |
-| `contractID` | long |
+| Field | Type | Notes |
+|---|---|---|
+| `billingCodeID` | long | ProjectCharges |
+| `contractID` | long | Contracts |
 

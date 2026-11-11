@@ -7,10 +7,10 @@ Describes a per hour cost for labor that is set at the contract level. This cost
 
 ## Fields (4)
 
-| Field | Type |
-|---|---|
-| `contractID` | integer |
-| `rate` | decimal |
-| `resourceID` | integer |
-| `roleID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `contractID` | integer | Contracts |
+| `rate` | decimal |  |
+| `resourceID` | integer | Resources |
+| `roleID` | integer | Roles |
 

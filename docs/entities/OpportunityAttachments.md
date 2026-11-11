@@ -7,18 +7,18 @@ This entity contains the attachments for the Opportunities entity. For more info
 
 ## Fields (12)
 
-| Field | Type |
-|---|---|
-| `attachDate` | datetime |
-| `attachedByContactID` | long |
-| `attachedByResourceID` | long |
-| `attachmentType` | string |
-| `contentType` | string |
-| `fullPath` | string |
-| `impersonatorCreatorResourceID` | integer |
-| `opportunityID` | long |
-| `parentAttachmentID` | integer |
-| `parentID` | long |
-| `publish` | integer |
-| `title` | string |
+| Field | Type | Notes |
+|---|---|---|
+| `attachDate` | datetime |  |
+| `attachedByContactID` | long | Contacts |
+| `attachedByResourceID` | long | Resources |
+| `attachmentType` | string |  |
+| `contentType` | string |  |
+| `fullPath` | string |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `opportunityID` | long | Opportunities |
+| `parentAttachmentID` | integer | AttachmentInfo (REST API) |
+| `parentID` | long |  |
+| `publish` | integer |  |
+| `title` | string |  |
 

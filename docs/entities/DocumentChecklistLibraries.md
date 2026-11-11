@@ -15,8 +15,8 @@ This entity represents checklist libraries related to documents in Autotask.
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `checklistLibraryID` | integer |
-| `documentID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `checklistLibraryID` | integer | ChecklistLibraries |
+| `documentID` | integer | Documents |
 

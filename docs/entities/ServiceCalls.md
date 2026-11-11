@@ -19,21 +19,21 @@ ServiceCalls entity relationships The REST API presents five service call relate
 
 ## Fields (15)
 
-| Field | Type |
-|---|---|
-| `cancelationNoticeHours` | decimal |
-| `canceledByResourceID` | integer |
-| `canceledDateTime` | datetime |
-| `companyID` | integer |
-| `companylocationID` | integer |
-| `createDateTime` | datetime |
-| `creatorResourceID` | integer |
-| `description` | string (2000) |
-| `duration` | decimal |
-| `endDateTime` | datetime |
-| `impersonatorCreatorResourceID` | integer |
-| `isComplete` | short |
-| `lastModifiedDateTime` | datetime |
-| `startDateTime` | datetime |
-| `status` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `cancelationNoticeHours` | decimal |  |
+| `canceledByResourceID` | integer |  |
+| `canceledDateTime` | datetime |  |
+| `companyID` | integer | Companies |
+| `companylocationID` | integer | CompanyLocations |
+| `createDateTime` | datetime |  |
+| `creatorResourceID` | integer |  |
+| `description` | string (2000) |  |
+| `duration` | decimal |  |
+| `endDateTime` | datetime |  |
+| `impersonatorCreatorResourceID` | integer | Resources |
+| `isComplete` |  | short |
+| `lastModifiedDateTime` | datetime |  |
+| `startDateTime` | datetime |  |
+| `status` | integer |  |
 

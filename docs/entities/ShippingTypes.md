@@ -7,10 +7,10 @@ Describes an Autotask Shipping Type. A Shipping Type defines a carrier for a pro
 
 ## Fields (4)
 
-| Field | Type |
-|---|---|
-| `billingCodeID` | integer |
-| `description` | string (2000) |
-| `isActive` | boolean |
-| `name` | string (100) |
+| Field | Type | Notes |
+|---|---|---|
+| `billingCodeID` | integer | ProjectCharges |
+| `description` | string (2000) |  |
+| `isActive` | boolean |  |
+| `name` | string (100) |  |
 

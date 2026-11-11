@@ -11,12 +11,12 @@ Describes the number of units of a specific service bundle that are associated w
 |---|---|---|
 | `cost` | decimal | This entity field will return no information if the user account making the query does not have sufficient privileges to view cost data in the Autotask UI. Additionally, if an update request does not have the necessary permissions, the API will ignore the call's values for the field even if they are blank or would be otherwise required. |
 | `approveAndPostDate` | datetime |  |
-| `contractID` | integer |  |
-| `contractServiceBundleID` | integer |  |
+| `contractID` | integer | Contracts |
+| `contractServiceBundleID` | integer | ContractServiceBundles |
 | `endDate` | datetime |  |
-| `organizationalLevelAssociationID` | integer |  |
+| `organizationalLevelAssociationID` | integer | OrganizationalLevelAssociations |
 | `price` | decimal |  |
-| `serviceBundleID` | integer |  |
+| `serviceBundleID` | integer | ServiceBundles |
 | `startDate` | datetime |  |
 | `units` | integer |  |
 

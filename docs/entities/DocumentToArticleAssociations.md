@@ -16,8 +16,8 @@ This entity represents documents associated with Knowledgebase articles in Autot
 
 ## Fields (2)
 
-| Field | Type |
-|---|---|
-| `associatedArticleID` | integer |
-| `documentID` | integer |
+| Field | Type | Notes |
+|---|---|---|
+| `associatedArticleID` | integer | KnowledgeBaseArticles |
+| `documentID` | integer | Documents |
 
