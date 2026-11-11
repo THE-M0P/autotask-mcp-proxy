@@ -28,7 +28,7 @@
 import { createServer } from 'node:http';
 import { createHmac, createVerify, createPublicKey } from 'node:crypto';
 import { pathToFileURL, fileURLToPath } from 'node:url';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 
 // ------------------------------------------------------------------ config
@@ -224,19 +224,30 @@ export function writeToolInCall(bodyBuf) {
 // has no equivalent. The proxy injects one docs tool into tools/list and
 // answers tools/call for it locally, over a small markdown corpus in ./docs.
 const DOCS_DIR = process.env.DOCS_DIR || fileURLToPath(new URL('./docs/', import.meta.url));
-const docs = new Map(); // filename → markdown
-try {
-  for (const f of readdirSync(DOCS_DIR).filter((f) => f.endsWith('.md'))) {
-    docs.set(f, readFileSync(path.join(DOCS_DIR, f), 'utf8'));
+const docs = new Map(); // relative path (e.g. "entities/Tasks.md") → markdown
+function loadDocs(dir, rel = '') {
+  for (const f of readdirSync(dir)) {
+    const full = path.join(dir, f);
+    const relPath = rel ? `${rel}/${f}` : f;
+    if (f.endsWith('.md')) {
+      docs.set(relPath, readFileSync(full, 'utf8'));
+    } else if (f !== '.git') {
+      try {
+        if (statSync(full).isDirectory()) loadDocs(full, relPath);
+      } catch { /* ignore */ }
+    }
   }
+}
+try {
+  loadDocs(DOCS_DIR);
 } catch {
-  /* no docs dir — docs tool returns "no docs" */
+  /* no docs dir — docs tools return "no docs" */
 }
 
 export const DOCS_TOOL = {
   name: 'autotask_docs_search',
   description:
-    'Search the Autotask knowledge base: product concepts (tickets vs service calls vs projects, checklists, schedules, time entries), API patterns, and your team\'s MSP conventions. Use it when unsure about Autotask semantics BEFORE calling other tools.',
+    'Search the Autotask knowledge base: product concepts (tickets vs service calls vs projects, checklists, schedules, time entries), the full REST API entity reference (field names, types, relationships), and your team\'s MSP conventions. Use it when unsure about Autotask semantics BEFORE calling other tools. Returns matching doc names — pass one to autotask_docs_get for the full text.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -247,15 +258,48 @@ export const DOCS_TOOL = {
   },
 };
 
+export const DOCS_GET_TOOL = {
+  name: 'autotask_docs_get',
+  description:
+    'Fetch the full text of a specific Autotask knowledge-base doc by name (a name returned by autotask_docs_search). Use it to read a complete doc — e.g. an entity\'s full field list, or a how-to guide. Names look like "Tasks", "entities/TimeEntries.md", or "autotask-core-objects.md".',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      name: { type: 'string', description: 'Doc name, e.g. "Tasks" or "entities/Tasks.md"' },
+    },
+    required: ['name'],
+  },
+};
+
 function firstSnippet(md, chars = 400) {
   const body = md.replace(/^#+\s.*\n?/, '').trim();
   return body.slice(0, chars) + (body.length > chars ? '…' : '');
 }
 
+/**
+ * Resolve a doc by name. Accepts the stored key ("entities/Tasks.md"), a bare
+ * entity name ("Tasks"), or a filename ("Tasks.md") and returns its markdown.
+ */
+export function getDoc(name) {
+  if (!name) return null;
+  const n = String(name).trim().replace(/^\.\//, '').replace(/\/+$/, '');
+  if (docs.has(n)) return docs.get(n);
+  const withMd = n.endsWith('.md') ? n : `${n}.md`;
+  if (docs.has(withMd)) return docs.get(withMd);
+  for (const [k, v] of docs) {
+    if (k === withMd || k.endsWith(`/${withMd}`)) return v;
+  }
+  return null;
+}
+
 /** Tiny keyword search over the markdown corpus (no deps, no model). */
 export function searchDocs(query, maxResults = 3) {
-  const terms = String(query).toLowerCase().split(/\W+/).filter((t) => t.length > 2);
+  const q = String(query).toLowerCase();
+  const terms = q.split(/\W+/).filter((t) => t.length > 2);
   if (!terms.length) return [];
+  // Field/schema queries want the API reference; how-to queries want the
+  // curated guidance. Only boost curated docs for non-field queries.
+  const isFieldQuery = /\b(field|fields|type|schema|property|column|api)\b/.test(q);
   const scored = [];
   for (const [name, content] of docs) {
     const lower = content.toLowerCase();
@@ -264,20 +308,35 @@ export function searchDocs(query, maxResults = 3) {
       score += lower.split(t).length - 1;
       if (name.toLowerCase().includes(t)) score += 5;
     }
-    if (score > 0) scored.push({ name, score, snippet: firstSnippet(content) });
+    if (score > 0) {
+      if (!name.startsWith('entities/') && !isFieldQuery) score += 12;
+      scored.push({ name, score, snippet: firstSnippet(content) });
+    }
   }
   scored.sort((a, b) => b.score - a.score);
   return scored.slice(0, Math.min(maxResults, 6));
 }
 
 function respondDocsCall(res, rpc) {
-  const query = String(rpc.params?.arguments?.query || '');
-  const maxResults = Number(rpc.params?.arguments?.maxResults || 3);
-  const results = searchDocs(query, maxResults);
-  const text = results.length
-    ? results.map((r) => `### ${r.name}\n${r.snippet}`).join('\n\n')
-    : 'No matching docs found. Try different keywords, or ask the user what they mean.';
-  log(`docs search: "${query}" → ${results.length} result(s)`);
+  const args = rpc.params?.arguments || {};
+  let text;
+  if (rpc.params?.name === DOCS_GET_TOOL.name) {
+    const doc = getDoc(args.name);
+    text = doc
+      ? doc.length > 24000
+        ? doc.slice(0, 24000) + '\n…[truncated]'
+        : doc
+      : `No doc named "${args.name}". Use autotask_docs_search to find the right name.`;
+    log(`docs get: "${args.name}" → ${doc ? doc.length + ' chars' : 'not found'}`);
+  } else {
+    const query = String(args.query || '');
+    const maxResults = Number(args.maxResults || 3);
+    const results = searchDocs(query, maxResults);
+    text = results.length
+      ? results.map((r) => `### ${r.name}\n${r.snippet}`).join('\n\n')
+      : 'No matching docs found. Try different keywords, or ask the user what they mean.';
+    log(`docs search: "${query}" → ${results.length} result(s)`);
+  }
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(
     JSON.stringify({
@@ -304,11 +363,15 @@ export async function mergeDocsToolIntoToolsList(upstream) {
   const ct = upstream.headers.get('content-type') || '';
 
   const merge = (obj) => {
-    if (obj?.result?.tools && !obj.result.tools.some((t) => t.name === DOCS_TOOL.name)) {
-      obj.result.tools.push(DOCS_TOOL);
-      return true;
+    if (!obj?.result?.tools) return false;
+    let changed = false;
+    for (const tool of [DOCS_TOOL, DOCS_GET_TOOL]) {
+      if (!obj.result.tools.some((t) => t.name === tool.name)) {
+        obj.result.tools.push(tool);
+        changed = true;
+      }
     }
-    return false;
+    return changed;
   };
 
   if (ct.includes('application/json')) {
@@ -400,8 +463,11 @@ async function handleMcp(req, res) {
     rpc = null;
   }
 
-  // docs tool: answered locally, never forwarded upstream
-  if (rpc?.method === 'tools/call' && rpc.params?.name === DOCS_TOOL.name) {
+  // docs tools: answered locally, never forwarded upstream
+  if (
+    rpc?.method === 'tools/call' &&
+    (rpc.params?.name === DOCS_TOOL.name || rpc.params?.name === DOCS_GET_TOOL.name)
+  ) {
     return respondDocsCall(res, rpc);
   }
 

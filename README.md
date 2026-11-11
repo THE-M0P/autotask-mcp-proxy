@@ -68,20 +68,51 @@ OAuth flow once the "Autotask-MCP resource app" registration exists with a
 `http://127.0.0.1:<port>/callback` redirect (dev only — remove before prod,
 same rule as the CIPP Inspector redirect).
 
-## Docs-as-tools (autotask_docs_search)
+## Docs-as-tools (autotask_docs_search + autotask_docs_get)
 
 autotask-mcp has no documentation tool (CIPP's MCP has `SearchDocs`/`GetDoc`).
-The proxy closes that gap: it injects an `autotask_docs_search` tool into the
-upstream `tools/list` response (JSON and SSE) and answers calls for it
-locally — a keyword search over the markdown corpus in `./docs/` (no deps,
-no model). The agent can now consult Autotask semantics (tickets vs service
-calls, checklists, schedules, time entries) and your team's MSP conventions
-before calling other tools. Add/edit docs by dropping `.md` files in `docs/`
-— no restart needed for search quality, one restart to pick up new files.
+The proxy closes that gap with the **same two-tool search-then-get pattern**:
+it injects `autotask_docs_search` and `autotask_docs_get` into the upstream
+`tools/list` response (JSON and SSE) and answers calls for both locally (no
+deps, no model, nothing pre-injected — the agent only pays tokens for what it
+retrieves).
 
-Starter corpus: `autotask-core-objects.md`, `schedules-and-recurring-work.md`,
-`time-entries-and-billing.md`, `team-conventions.md` (the last one is a
-scaffold — fill it with your team's real conventions).
+- **`autotask_docs_search(query)`** — keyword search over the corpus, returns a
+  ranked shortlist of doc names + snippets.
+- **`autotask_docs_get(name)`** — fetches the full text of one doc (a name from
+  the search). This is where the real content — e.g. an entity's full field
+  list — comes from.
+
+### The corpus (two layers)
+
+```
+docs/
+├── autotask-core-objects.md        ┐
+├── schedules-and-recurring-work.md │ hand-written how-to guidance
+├── time-entries-and-billing.md     │ (primary layer — WHEN/HOW)
+├── team-conventions.md             ┘ (scaffold — fill with your team's rules)
+└── entities/                       ← all 203 REST API entities, scraped
+    ├── Tasks.md                      (reference layer — field names, types,
+    ├── TimeEntries.md                  relationships, access URLs)
+    └── … (201 more)
+```
+
+For a how-to query the curated guidance surfaces; for a field/schema query the
+entity reference ranks first. Both are in the same searched corpus — the query
+decides which layer leads.
+
+### Regenerating the entity reference
+
+The `docs/entities/` files are scraped from the official Autotask Developer
+Help at build time (not hand-written). To refresh after an API change:
+
+```bash
+node scripts/scrape-entities.mjs              # all 203 entities (~30s)
+node scripts/scrape-entities.mjs Tasks TimeEntries   # or a subset
+```
+
+Drop new curated how-to docs in `docs/` any time. Restart the container to pick
+up new files (search quality itself needs no restart).
 
 ## Read-only mode (pilot phase 1)
 
