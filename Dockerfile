@@ -4,5 +4,8 @@ COPY proxy.mjs .
 # The docs corpus is served by autotask_docs_search / autotask_docs_get at
 # runtime — it must be in the image (DOCS_DIR defaults to ./docs/).
 COPY docs/ ./docs/
+# Run as the unprivileged `node` user (the image ships one). The proxy binds
+# 8080 (unprivileged) and only reads ./docs/, so no root is needed.
+USER node
 EXPOSE 8080
 CMD ["node", "proxy.mjs"]
