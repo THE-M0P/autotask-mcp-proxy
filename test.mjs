@@ -214,9 +214,10 @@ check('DESCRIBE_TOOL requires entityName', DESCRIBE_TOOL.inputSchema.required[0]
     check('describeEntity: returns parsed fields', fields.length, 1);
     check('describeEntity: field name', fields[0].name, 'id');
     const fieldCall = calls.find((c) => c.url.includes('entityInformation/fields'));
-    check('describeEntity: correct field URL', fieldCall.url, 'https://na1.autotask.net/atservicesrest/api/Tasks/entityInformation/fields');
-    check('describeEntity: sends impersonation header', fieldCall.headers['x-impersonation-resource-id'], '12345');
-    check('describeEntity: sends keycard header', fieldCall.headers['x-api-key'] !== undefined, true);
+    check('describeEntity: correct field URL (with /v1.0)', fieldCall.url, 'https://na1.autotask.net/atservicesrest/api/v1.0/Tasks/entityInformation/fields');
+    check('describeEntity: native impersonation header', fieldCall.headers['ImpersonationResourceId'], '12345');
+    check('describeEntity: native keycard headers', fieldCall.headers['UserName'] !== undefined && fieldCall.headers['Secret'] !== undefined && fieldCall.headers['ApiIntegrationcode'] !== undefined, true);
+    check('describeEntity: NOT the gateway headers', fieldCall.headers['x-api-key'] === undefined, true);
   } finally {
     globalThis.fetch = origFetch;
   }

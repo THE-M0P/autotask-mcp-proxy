@@ -200,8 +200,10 @@ async function validateToken(token) {
   if (!ok) throw httpError(401, 'bad signature');
 
   const now = Math.floor(Date.now() / 1000);
-  if (claims.nbf && claims.nbf > now) throw httpError(401, 'token not yet valid');
-  if (claims.exp && claims.exp < now) throw httpError(401, 'token expired');
+  const SKEW = 30; // seconds of clock-skew tolerance
+  // Fail closed: a token with no exp is rejected (a non-expiring token is a risk).
+  if (typeof claims.exp !== 'number' || claims.exp + SKEW < now) throw httpError(401, 'token expired (or missing exp)');
+  if (typeof claims.nbf === 'number' && claims.nbf - SKEW > now) throw httpError(401, 'token not yet valid');
   // Fail closed: when a tenant is configured, tid and iss MUST be present and match.
   if (CFG.tenantId) {
     if (!claims.tid || claims.tid !== CFG.tenantId) throw httpError(401, 'wrong tenant');
@@ -224,6 +226,7 @@ let zoneUrl = null;
 const resourceCache = new Map(); // upn (lowercase) → { id: number|null, at: epochMs }
 const POS_TTL = 10 * 60 * 1000; // positive results: 10 min (resource IDs are stable)
 const NEG_TTL = 30 * 1000; // negative results: 30 s (don't hammer Autotask for a missing user)
+const API_TIMEOUT_MS = 30 * 1000; // direct Autotask API calls: 30 s (don't hang on a slow zone)
 
 function cacheGet(key) {
   const e = resourceCache.get(key);
@@ -240,7 +243,8 @@ function cacheGet(key) {
 async function getZoneUrl() {
   if (zoneUrl) return zoneUrl;
   const res = await fetch(
-    `https://webservices.autotask.net/atservicesrest/v1.0/zoneInformation?user=${encodeURIComponent(CFG.atUsername)}`
+    `https://webservices.autotask.net/atservicesrest/v1.0/zoneInformation?user=${encodeURIComponent(CFG.atUsername)}`,
+    { signal: AbortSignal.timeout(API_TIMEOUT_MS) }
   );
   if (!res.ok) throw httpError(502, `Autotask zone lookup failed: HTTP ${res.status}`);
   const body = await res.json();
@@ -278,6 +282,7 @@ async function resolveResourceId(upn) {
       filter: [{ op: 'eq', field: 'email', value: upn }],
       MaxRecords: 5,
     }),
+    signal: AbortSignal.timeout(API_TIMEOUT_MS),
   });
   if (!res.ok) throw httpError(502, `Autotask resource lookup failed: HTTP ${res.status}`);
   const body = await res.json();
@@ -413,15 +418,20 @@ export const DESCRIBE_TOOL = {
  */
 export async function describeEntity(entityName, resourceId) {
   const base = await getZoneUrl();
-  const url = `${base}/${encodeURIComponent(entityName)}/entityInformation/fields`;
+  // Native Autotask API (NOT the gateway): /v1.0 root + ApiIntegrationcode/UserName/Secret
+  // auth headers + ImpersonationResourceId — the same shape autotask-mcp uses for its
+  // own direct calls. (The x-api-key/x-api-secret/x-integration-code headers are the
+  // gateway's, meant for the proxy→autotask-mcp hop, not the Autotask API.)
+  const url = `${base}/v1.0/${encodeURIComponent(entityName)}/entityInformation/fields`;
   const res = await fetch(url, {
     headers: {
-      accept: 'application/json',
-      'x-api-key': CFG.atUsername,
-      'x-api-secret': CFG.atSecret,
-      'x-integration-code': CFG.atIntegrationCode,
-      'x-impersonation-resource-id': sanitizeHeaderValue(resourceId),
+      Accept: 'application/json',
+      ApiIntegrationcode: CFG.atIntegrationCode,
+      UserName: CFG.atUsername,
+      Secret: CFG.atSecret,
+      ImpersonationResourceId: sanitizeHeaderValue(resourceId),
     },
+    signal: AbortSignal.timeout(API_TIMEOUT_MS),
   });
   if (!res.ok) throw httpError(502, `Autotask field lookup failed: HTTP ${res.status}`);
   const body = await res.json();

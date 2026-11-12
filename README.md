@@ -74,9 +74,10 @@ same rule as the CIPP Inspector redirect).
 Two dependency-free suites, both run with plain `node` (no test framework):
 
 ```bash
-node test.mjs                # proxy: 61 assertions (tool gating incl. readOnlyHint,
-                             #        docs search/get, tools/list merge, override
-                             #        normalisation, placeholder-secret detection)
+node test.mjs                # proxy: 94 assertions (tool gating incl. readOnlyHint,
+                             #        docs search/get, live describe-entity, tools/list
+                             #        merge, override normalisation, placeholder-secret
+                             #        detection, loopback bind, header sanitisation)
 node test/scrape.test.mjs    # scraper: 30 assertions (both Autotask HTML layouts,
                              #        field/type detection, with regression fixtures)
 ```
