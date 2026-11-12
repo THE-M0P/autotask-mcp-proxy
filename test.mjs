@@ -1,6 +1,6 @@
 // Unit tests for the read-only tool gating. Run: node test.mjs
 process.env.READ_ONLY = 'true'; // must be set before proxy.mjs is evaluated
-const { isWriteTool, writeToolInCall, searchDocs, mergeDocsToolIntoToolsList, DOCS_TOOL, DOCS_GET_TOOL, getDoc } = await import('./proxy.mjs');
+const { isWriteTool, writeToolInCall, searchDocs, mergeDocsToolIntoToolsList, DOCS_TOOL, DOCS_GET_TOOL, getDoc, isPlaceholder, readOnlyHints, sanitizeHeaderValue } = await import('./proxy.mjs');
 
 let failures = 0;
 function check(label, actual, expected) {
@@ -20,6 +20,14 @@ function check(label, actual, expected) {
   check('override: non-object JSON ("123") does not crash (returns {})', norm('123'), {});
 }
 
+// --- config: placeholder-secret detection (fail-fast startup) ---
+check('placeholder: changeme detected', isPlaceholder('changeme'), true);
+check('placeholder: replace-me detected', isPlaceholder('replace-me'), true);
+check('placeholder: case-insensitive', isPlaceholder('CHANGE_ME'), true);
+check('placeholder: trimmed', isPlaceholder('  secret  '), true);
+check('placeholder: real secret not flagged', isPlaceholder('a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4'), false);
+check('placeholder: non-string not flagged', isPlaceholder(12345), false);
+
 // --- isWriteTool: prefix classification of the real 110-tool surface ---
 check('search tool is read', isWriteTool('autotask_search_tickets'), false);
 check('get tool is read', isWriteTool('autotask_get_ticket_details'), false);
@@ -32,6 +40,16 @@ check('delete tool is write', isWriteTool('autotask_delete_ticket'), true);
 check('raw_request is write', isWriteTool('autotask_raw_request'), true);
 check('unknown tool defaults to write (fail-safe)', isWriteTool('autotask_something_new'), true);
 check('null/empty is not a write', isWriteTool(null), false);
+
+// --- readOnlyHint: vendor's own classification takes precedence ---
+{
+  const tool = 'autotask_experimental_thing'; // not a read prefix, not in READ_EXACT
+  check('hint: unknown tool is write before tools/list (fail-safe)', isWriteTool(tool), true);
+  readOnlyHints.add(tool); // as if harvested from a tools/list readOnlyHint:true
+  check('hint: vendor readOnlyHint:true makes it a read', isWriteTool(tool), false);
+  readOnlyHints.delete(tool);
+  check('hint: removed again → write (fail-safe restored)', isWriteTool(tool), true);
+}
 
 // --- writeToolInCall: JSON-RPC inspection (takes a parsed message or batch) ---
 const rpc = (name, args) => ({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } });
@@ -114,6 +132,22 @@ check('merge: SSE tools/list gains get tool', mergedSse.includes('autotask_docs_
 
 const other = await mergeDocsToolIntoToolsList(fakeUpstream('application/json', '{"jsonrpc":"2.0","id":1,"result":{}}'));
 check('merge: non-tools/list passes through (null)', other, null);
+
+// --- merge harvests the upstream's readOnlyHint annotations ---
+{
+  const hinted = 'autotask_hinted_read';
+  const hintedList = JSON.stringify({ jsonrpc: '2.0', id: 1, result: { tools: [{ name: hinted, annotations: { readOnlyHint: true } }] } });
+  await mergeDocsToolIntoToolsList(fakeUpstream('application/json', hintedList));
+  check('merge: readOnlyHint harvested into the gate', readOnlyHints.has(hinted), true);
+  check('gate: harvested hint tool is a read', isWriteTool(hinted), false);
+  readOnlyHints.delete(hinted);
+}
+
+// --- sanitizeHeaderValue: control chars stripped, length capped ---
+check('sanitize: strips control chars', sanitizeHeaderValue('abc\x00def\x1fghi'), 'abcdefghi');
+check('sanitize: trims whitespace', sanitizeHeaderValue('  padded  '), 'padded');
+check('sanitize: caps length', sanitizeHeaderValue('x'.repeat(300), 10).length, 10);
+check('sanitize: null → empty string', sanitizeHeaderValue(null), '');
 
 console.log(failures === 0 ? '\nALL PASS' : `\n${failures} FAILURES`);
 process.exit(failures === 0 ? 0 : 1);

@@ -67,6 +67,48 @@ function httpError(status, message) {
   return e;
 }
 
+// ------------------------------------------------- config validation (fail fast)
+// Stolen from the WYRE MCP servers: a copied example value must not boot the
+// proxy and then 401 every request. Refuse to start on empty/placeholder
+// secrets; PROXY_ALLOW_INSECURE_DEV=1 bypasses the empty-secret check only
+// (a placeholder is never bypassed), for local development.
+const KNOWN_PLACEHOLDERS = new Set([
+  'replace-with-a-real-secret', 'your-s2s-secret', 'your-secret', 'changeme',
+  'change-me', 'change_me', 'placeholder', 'secret', 'example', 'replace-me', 's2s-secret',
+  'api-user@example.com',
+]);
+export function isPlaceholder(value) {
+  return typeof value === 'string' && KNOWN_PLACEHOLDERS.has(value.trim().toLowerCase());
+}
+
+function validateConfig() {
+  const errors = [];
+  const warnings = [];
+  const insecureDev = process.env.PROXY_ALLOW_INSECURE_DEV === '1';
+
+  const s2s = (CFG.s2sSecret || '').trim();
+  if (isPlaceholder(s2s)) {
+    errors.push('S2S_SECRET is a known placeholder — generate one with `openssl rand -hex 32` (must match autotask-mcp CONDUIT_S2S_SECRET)');
+  } else if (!s2s) {
+    if (insecureDev) warnings.push('PROXY_ALLOW_INSECURE_DEV=1: S2S_SECRET empty — S2S signing uses an empty key (local dev only)');
+    else errors.push('S2S_SECRET is empty — set it (must match autotask-mcp CONDUIT_S2S_SECRET), or set PROXY_ALLOW_INSECURE_DEV=1 for local dev');
+  }
+
+  for (const [name, val] of [
+    ['AUTOTASK_USERNAME', CFG.atUsername],
+    ['AUTOTASK_SECRET', CFG.atSecret],
+    ['AUTOTASK_INTEGRATION_CODE', CFG.atIntegrationCode],
+  ]) {
+    if (!val || isPlaceholder(val)) warnings.push(`${name} is missing or a placeholder — Autotask resource lookup will fail`);
+  }
+
+  for (const w of warnings) console.warn('CONFIG WARNING:', w);
+  if (errors.length) {
+    for (const e of errors) console.error('CONFIG ERROR:', e);
+    process.exit(1);
+  }
+}
+
 // ---------------------------------------------------------- token validation
 let jwksCache = null;
 let jwksFetchedAt = 0;
@@ -220,10 +262,16 @@ async function resolveResourceId(upn) {
 const READ_PREFIXES = ['search_', 'get_', 'list_', 'test_', 'docs_'];
 const READ_EXACT = new Set(['autotask_router', 'autotask_list_categories', 'autotask_list_category_tools']);
 const WRITE_EXACT = new Set(['autotask_raw_request']);
+// Tool names the upstream marked `annotations.readOnlyHint: true`, harvested
+// from tools/list. The vendor's own classification is authoritative, so it
+// takes precedence over the prefix heuristics below (which remain the
+// fail-safe for tools seen before the first tools/list).
+export const readOnlyHints = new Set();
 
 export function isWriteTool(name) {
   if (!name) return false;
   if (WRITE_EXACT.has(name)) return true;
+  if (readOnlyHints.has(name)) return false;
   if (READ_EXACT.has(name)) return false;
   const bare = String(name).replace(/^autotask_/, '');
   return !READ_PREFIXES.some((p) => bare.startsWith(p));
@@ -379,6 +427,13 @@ function respondDocsCall(res, rpc) {
   );
 }
 
+/** Record the upstream's own read-only classification (annotations.readOnlyHint). */
+function harvestReadOnlyHints(obj) {
+  for (const tool of obj?.result?.tools || []) {
+    if (tool?.annotations?.readOnlyHint === true && tool?.name) readOnlyHints.add(tool.name);
+  }
+}
+
 /**
  * Merge the docs tool into a tools/list response (JSON or SSE). Returns the
  * transformed body as a string, or null if nothing to merge.
@@ -395,6 +450,7 @@ export async function mergeDocsToolIntoToolsList(upstream) {
   const ct = upstream.headers.get('content-type') || '';
 
   const merge = (obj) => {
+    harvestReadOnlyHints(obj);
     if (!obj?.result?.tools) return false;
     let changed = false;
     for (const tool of [DOCS_TOOL, DOCS_GET_TOOL]) {
@@ -428,6 +484,11 @@ export async function mergeDocsToolIntoToolsList(upstream) {
     return changed ? out : null;
   }
   return null;
+}
+
+/** Strip control chars + cap length on any user-derived value we put in a header. */
+export function sanitizeHeaderValue(value, maxLen = 256) {
+  return String(value ?? '').replace(/[\x00-\x1f\x7f]/g, '').trim().slice(0, maxLen);
 }
 
 // ------------------------------------------------------------------- S2S
@@ -541,7 +602,7 @@ async function handleMcp(req, res) {
     'x-api-key': CFG.atUsername,
     'x-api-secret': CFG.atSecret,
     'x-integration-code': CFG.atIntegrationCode,
-    'x-impersonation-resource-id': String(resourceId),
+    'x-impersonation-resource-id': sanitizeHeaderValue(resourceId),
     'x-gateway-s2s': s2sHeader(),
   };
 
@@ -630,6 +691,7 @@ const server = createServer(async (req, res) => {
 
 // Only start listening when run directly (not when imported by test.mjs)
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  validateConfig();
   server.listen(CFG.port, () => {
     log(`Autotask MCP identity proxy listening on :${CFG.port}`);
     log(`upstream: ${CFG.upstream}`);

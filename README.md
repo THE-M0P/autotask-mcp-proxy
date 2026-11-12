@@ -74,8 +74,9 @@ same rule as the CIPP Inspector redirect).
 Two dependency-free suites, both run with plain `node` (no test framework):
 
 ```bash
-node test.mjs                # proxy: 46 assertions (tool gating, docs search/get,
-                             #        tools/list merge, override normalisation)
+node test.mjs                # proxy: 61 assertions (tool gating incl. readOnlyHint,
+                             #        docs search/get, tools/list merge, override
+                             #        normalisation, placeholder-secret detection)
 node test/scrape.test.mjs    # scraper: 30 assertions (both Autotask HTML layouts,
                              #        field/type detection, with regression fixtures)
 ```
@@ -138,6 +139,9 @@ read-only surface: `search_*` / `get_*` / `list_*` tools work, and write
 tools (`create_*`, `update_*`, `delete_*`, `autotask_raw_request`) are
 rejected with a clear JSON-RPC error — including writes smuggled through the
 lazy-loading meta-tool (`autotask_execute_tool` with a write `tool` argument).
+The gate trusts the upstream's own `annotations.readOnlyHint` classification
+when present (harvested from `tools/list`), and falls back to the prefix
+heuristics as the fail-safe for tools seen before the first `tools/list`.
 Flip to `READ_ONLY=false` for pilot phase 2 (writes: notes, time entries).
 
 ## What the proxy logs
@@ -164,6 +168,12 @@ That line *is* the audit trail for the identity layer.
 
 The proxy is the identity layer, so it fails closed. Specifics:
 
+- **Fail-fast startup validation:** the proxy refuses to boot (exit 1) if
+  `S2S_SECRET` is empty or a known placeholder (`changeme`, `replace-me`, …),
+  so a copied example value can't start the container and then 401 every
+  request. `PROXY_ALLOW_INSECURE_DEV=1` bypasses the empty-secret check only
+  (never a placeholder) for local development. Missing Autotask keycard values
+  are a loud warning (the proxy still boots to serve the docs tools + health).
 - **Token validation:** RS256 only (blocks `none` / HS256 alg-confusion),
   signature checked against the tenant's JWKS, and `exp`, `nbf`, `tid`, `iss`,
   `aud`, and scope are all enforced. When `TENANT_ID` is set, `tid` and `iss`
