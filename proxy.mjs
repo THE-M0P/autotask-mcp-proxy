@@ -42,6 +42,7 @@ function safeJson(raw, fallback) {
 
 const CFG = {
   port: Number(process.env.PORT || 8080),
+  host: process.env.HOST || '', // '' → 0.0.0.0 in prod, forced 127.0.0.1 in dev
   upstream: (process.env.UPSTREAM_URL || 'http://autotask-mcp:8080').replace(/\/+$/, ''),
   atUsername: process.env.AUTOTASK_USERNAME || '',
   atSecret: process.env.AUTOTASK_SECRET || '',
@@ -81,6 +82,39 @@ export function isPlaceholder(value) {
   return typeof value === 'string' && KNOWN_PLACEHOLDERS.has(value.trim().toLowerCase());
 }
 
+/** 127.0.0.1, the rest of 127.0.0.0/8, localhost, and ::1 (incl. bracketed / IPv4-mapped). */
+export function isLoopbackBindHost(host) {
+  const normalized = String(host).trim().toLowerCase().replace(/^\[(.+)\]$/, '$1');
+  if (normalized === 'localhost' || normalized === '::1') return true;
+  const bare = normalized.startsWith('::ffff:') ? normalized.slice('::ffff:'.length) : normalized;
+  const parts = bare.split('.');
+  if (parts.length !== 4) return false;
+  if (parts.some((p) => !/^\d{1,3}$/.test(p) || Number(p) > 255)) return false;
+  return parts[0] === '127';
+}
+
+/**
+ * Resolve the effective bind host. No real S2S secret ⇒ dev mode ⇒ force
+ * 127.0.0.1 (and refuse a non-loopback HOST). Real secret ⇒ honor HOST
+ * (default 0.0.0.0). Pure (no process.exit) so it's unit-testable.
+ */
+export function resolveBindHost(env = process.env) {
+  const s2s = (env.S2S_SECRET || '').trim();
+  const hasRealS2s = s2s && !isPlaceholder(s2s);
+  const requestedHost = (env.HOST || '').trim();
+  const errors = [];
+  let host;
+  if (!hasRealS2s) {
+    if (requestedHost && !isLoopbackBindHost(requestedHost)) {
+      errors.push(`HOST=${requestedHost} is not loopback but S2S_SECRET is not a real secret — set a real secret or bind to 127.0.0.1`);
+    }
+    host = '127.0.0.1';
+  } else {
+    host = requestedHost || '0.0.0.0';
+  }
+  return { host, errors };
+}
+
 function validateConfig() {
   const errors = [];
   const warnings = [];
@@ -102,11 +136,17 @@ function validateConfig() {
     if (!val || isPlaceholder(val)) warnings.push(`${name} is missing or a placeholder — Autotask resource lookup will fail`);
   }
 
+  // Bind host: no real S2S secret → dev mode → force loopback (and refuse a
+  // non-loopback HOST). Real secret → honor HOST (default 0.0.0.0).
+  const { host, errors: hostErrors } = resolveBindHost();
+  errors.push(...hostErrors);
+
   for (const w of warnings) console.warn('CONFIG WARNING:', w);
   if (errors.length) {
     for (const e of errors) console.error('CONFIG ERROR:', e);
     process.exit(1);
   }
+  return host;
 }
 
 // ---------------------------------------------------------- token validation
@@ -259,7 +299,7 @@ async function resolveResourceId(upn) {
 // ------------------------------------------------- read-only tool gating
 // autotask-mcp tool prefixes: search_(35) get_(22) list_(7) = read;
 // create_(24) update_(12) delete_(6) + raw_request = write.
-const READ_PREFIXES = ['search_', 'get_', 'list_', 'test_', 'docs_'];
+const READ_PREFIXES = ['search_', 'get_', 'list_', 'test_', 'docs_', 'describe_'];
 const READ_EXACT = new Set(['autotask_router', 'autotask_list_categories', 'autotask_list_category_tools']);
 const WRITE_EXACT = new Set(['autotask_raw_request']);
 // Tool names the upstream marked `annotations.readOnlyHint: true`, harvested
@@ -351,6 +391,62 @@ export const DOCS_GET_TOOL = {
   },
 };
 
+// Live field schema: the scraped docs corpus is static; this tool queries the
+// Autotask API for the CURRENT field list (names, types, required/picklist/
+// queryable flags, picklist values) so a create_/update_ uses exact field names.
+export const DESCRIBE_TOOL = {
+  name: 'autotask_describe_entity',
+  description:
+    'Get the LIVE field schema for an Autotask entity straight from the Autotask API — current field names, data types, and required/picklist/queryable flags, plus picklist values. Use it before a create_/update_ call when you need the exact, up-to-date field list (the static docs from autotask_docs_get can lag the live API). Returns one line per field.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      entityName: { type: 'string', description: 'Autotask entity name, e.g. "Tasks", "TimeEntries", "Companies"' },
+    },
+    required: ['entityName'],
+  },
+};
+
+/**
+ * GET /{entity}/entityInformation/fields on the zone API, using the shared
+ * keycard + the requesting user's impersonation id. Returns the raw field list.
+ */
+export async function describeEntity(entityName, resourceId) {
+  const base = await getZoneUrl();
+  const url = `${base}/${encodeURIComponent(entityName)}/entityInformation/fields`;
+  const res = await fetch(url, {
+    headers: {
+      accept: 'application/json',
+      'x-api-key': CFG.atUsername,
+      'x-api-secret': CFG.atSecret,
+      'x-integration-code': CFG.atIntegrationCode,
+      'x-impersonation-resource-id': sanitizeHeaderValue(resourceId),
+    },
+  });
+  if (!res.ok) throw httpError(502, `Autotask field lookup failed: HTTP ${res.status}`);
+  const body = await res.json();
+  return body?.fields || body?.items || [];
+}
+
+/** Render the live field list as compact markdown (one line per field). */
+export function renderFields(entityName, fields) {
+  if (!fields.length) return `No fields returned for entity "${entityName}".`;
+  const lines = [`# ${entityName} — live field schema (${fields.length} fields)`, ''];
+  for (const f of fields) {
+    const flags = [
+      f.isRequired ? 'required' : null,
+      f.isPickList ? `picklist(${(f.picklistValues || []).length})` : null,
+      f.isQueryable === false ? 'not-queryable' : null,
+    ].filter(Boolean).join(', ');
+    lines.push(`- **${f.name}** \`${f.dataType || '?'}\`${flags ? ` — ${flags}` : ''}`);
+    if (f.isPickList && f.picklistValues?.length) {
+      const vals = f.picklistValues.filter((v) => v.isActive !== false).map((v) => v.value ?? v.name).slice(0, 30);
+      lines.push(`  - values: ${vals.join(', ')}${f.picklistValues.length > 30 ? ' …' : ''}`);
+    }
+  }
+  return lines.join('\n');
+}
+
 function firstSnippet(md, chars = 400) {
   const body = md.replace(/^#+\s.*\n?/, '').trim();
   return body.slice(0, chars) + (body.length > chars ? '…' : '');
@@ -427,6 +523,31 @@ function respondDocsCall(res, rpc) {
   );
 }
 
+/** Live field schema: answered locally via a direct Autotask API call. */
+async function respondDescribeCall(res, rpc, resourceId) {
+  const args = rpc.params?.arguments || {};
+  const entityName = String(args.entityName || '').trim();
+  const reply = (text, isError, status = 200) => {
+    res.writeHead(status, { 'Content-Type': 'application/json' });
+    res.end(
+      JSON.stringify({
+        jsonrpc: '2.0',
+        id: rpc.id ?? null,
+        result: { content: [{ type: 'text', text }], isError },
+      })
+    );
+  };
+  if (!entityName) return reply('Missing entityName. Pass an Autotask entity name, e.g. "Tasks".', true);
+  try {
+    const fields = await describeEntity(entityName, resourceId);
+    log(`describe: "${entityName}" → ${fields.length} field(s)`);
+    reply(renderFields(entityName, fields), false);
+  } catch (e) {
+    log(`describe: "${entityName}" failed: ${e.message}`);
+    reply(`describe_entity failed: ${e.message}`, true, e.status || 502);
+  }
+}
+
 /** Record the upstream's own read-only classification (annotations.readOnlyHint). */
 function harvestReadOnlyHints(obj) {
   for (const tool of obj?.result?.tools || []) {
@@ -453,7 +574,7 @@ export async function mergeDocsToolIntoToolsList(upstream) {
     harvestReadOnlyHints(obj);
     if (!obj?.result?.tools) return false;
     let changed = false;
-    for (const tool of [DOCS_TOOL, DOCS_GET_TOOL]) {
+    for (const tool of [DOCS_TOOL, DOCS_GET_TOOL, DESCRIBE_TOOL]) {
       if (!obj.result.tools.some((t) => t.name === tool.name)) {
         obj.result.tools.push(tool);
         changed = true;
@@ -579,6 +700,11 @@ async function handleMcp(req, res) {
     return respondDocsCall(res, rpc);
   }
 
+  // live field schema: answered locally via a direct Autotask API call
+  if (rpc?.method === 'tools/call' && rpc.params?.name === DESCRIBE_TOOL.name) {
+    return respondDescribeCall(res, rpc, resourceId);
+  }
+
   const writeTool = writeToolInCall(rpc);
   if (writeTool) {
     log(`READ_ONLY: rejected write tool ${writeTool} for ${upn}`);
@@ -691,9 +817,9 @@ const server = createServer(async (req, res) => {
 
 // Only start listening when run directly (not when imported by test.mjs)
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  validateConfig();
-  server.listen(CFG.port, () => {
-    log(`Autotask MCP identity proxy listening on :${CFG.port}`);
+  const bindHost = validateConfig();
+  server.listen(CFG.port, bindHost, () => {
+    log(`Autotask MCP identity proxy listening on ${bindHost}:${CFG.port}`);
     log(`upstream: ${CFG.upstream}`);
     log(`tenant: ${CFG.tenantId || '(unset — tokens not tenant-checked)'}`);
     log(`audience: ${CFG.audience || '(unset — tokens not audience-checked)'}`);

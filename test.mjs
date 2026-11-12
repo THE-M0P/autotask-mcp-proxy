@@ -1,6 +1,6 @@
 // Unit tests for the read-only tool gating. Run: node test.mjs
 process.env.READ_ONLY = 'true'; // must be set before proxy.mjs is evaluated
-const { isWriteTool, writeToolInCall, searchDocs, mergeDocsToolIntoToolsList, DOCS_TOOL, DOCS_GET_TOOL, getDoc, isPlaceholder, readOnlyHints, sanitizeHeaderValue } = await import('./proxy.mjs');
+const { isWriteTool, writeToolInCall, searchDocs, mergeDocsToolIntoToolsList, DOCS_TOOL, DOCS_GET_TOOL, getDoc, isPlaceholder, readOnlyHints, sanitizeHeaderValue, isLoopbackBindHost, resolveBindHost, DESCRIBE_TOOL, renderFields, describeEntity } = await import('./proxy.mjs');
 
 let failures = 0;
 function check(label, actual, expected) {
@@ -27,6 +27,26 @@ check('placeholder: case-insensitive', isPlaceholder('CHANGE_ME'), true);
 check('placeholder: trimmed', isPlaceholder('  secret  '), true);
 check('placeholder: real secret not flagged', isPlaceholder('a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4'), false);
 check('placeholder: non-string not flagged', isPlaceholder(12345), false);
+
+// --- loopback bind host detection ---
+check('loopback: 127.0.0.1', isLoopbackBindHost('127.0.0.1'), true);
+check('loopback: 127.0.0.5 (127/8)', isLoopbackBindHost('127.0.0.5'), true);
+check('loopback: localhost', isLoopbackBindHost('localhost'), true);
+check('loopback: ::1', isLoopbackBindHost('::1'), true);
+check('loopback: [::1] bracketed', isLoopbackBindHost('[::1]'), true);
+check('loopback: ::ffff:127.0.0.1 mapped', isLoopbackBindHost('::ffff:127.0.0.1'), true);
+check('loopback: 0.0.0.0 is NOT loopback', isLoopbackBindHost('0.0.0.0'), false);
+check('loopback: 192.168.1.1 not loopback', isLoopbackBindHost('192.168.1.1'), false);
+check('loopback: 256.0.0.1 invalid octet', isLoopbackBindHost('256.0.0.1'), false);
+check('loopback: empty not loopback', isLoopbackBindHost(''), false);
+
+// --- resolveBindHost: dev forces loopback, prod honors HOST ---
+check('bind: dev (empty s2s) forces 127.0.0.1', resolveBindHost({ S2S_SECRET: '' }).host, '127.0.0.1');
+check('bind: dev + loopback HOST ok', resolveBindHost({ S2S_SECRET: '', HOST: '127.0.0.1' }).errors.length, 0);
+check('bind: dev + non-loopback HOST refused', resolveBindHost({ S2S_SECRET: '', HOST: '0.0.0.0' }).errors.length, 1);
+check('bind: real s2s, no HOST → 0.0.0.0', resolveBindHost({ S2S_SECRET: 'a1b2c3d4' }).host, '0.0.0.0');
+check('bind: real s2s + HOST honored', resolveBindHost({ S2S_SECRET: 'a1b2c3d4', HOST: '10.0.0.5' }).host, '10.0.0.5');
+check('bind: placeholder s2s counts as no-real (dev)', resolveBindHost({ S2S_SECRET: 'changeme' }).host, '127.0.0.1');
 
 // --- isWriteTool: prefix classification of the real 110-tool surface ---
 check('search tool is read', isWriteTool('autotask_search_tickets'), false);
@@ -148,6 +168,59 @@ check('sanitize: strips control chars', sanitizeHeaderValue('abc\x00def\x1fghi')
 check('sanitize: trims whitespace', sanitizeHeaderValue('  padded  '), 'padded');
 check('sanitize: caps length', sanitizeHeaderValue('x'.repeat(300), 10).length, 10);
 check('sanitize: null → empty string', sanitizeHeaderValue(null), '');
+
+// --- live describe-entity tool ---
+check('DESCRIBE_TOOL has a name', DESCRIBE_TOOL.name, 'autotask_describe_entity');
+check('DESCRIBE_TOOL requires entityName', DESCRIBE_TOOL.inputSchema.required[0], 'entityName');
+
+// renderFields: flags, picklist values, empty case
+{
+  const fields = [
+    { name: 'id', dataType: 'integer', isRequired: false, isPickList: false, isQueryable: true },
+    { name: 'name', dataType: 'string', isRequired: true, isPickList: false, isQueryable: true },
+    { name: 'status', dataType: 'string', isRequired: false, isPickList: true, isQueryable: true, picklistValues: [{ value: 'Open', isActive: true }, { value: 'Closed', isActive: false }] },
+    { name: 'internalNote', dataType: 'string', isRequired: false, isPickList: false, isQueryable: false },
+  ];
+  const md = renderFields('Tasks', fields);
+  check('renderFields: header + count', md.startsWith('# Tasks — live field schema (4 fields)'), true);
+  check('renderFields: required flag', md.includes('**name** `string` — required'), true);
+  check('renderFields: picklist flag', md.includes('picklist(2)'), true);
+  check('renderFields: active picklist value shown', md.includes('values: Open'), true);
+  check('renderFields: inactive picklist value excluded', !md.includes('Closed'), true);
+  check('renderFields: not-queryable flag', md.includes('**internalNote** `string` — not-queryable'), true);
+  check('renderFields: plain field has no flags', /\*\*id\*\* `integer`(?![ —])/.test(md), true);
+  check('renderFields: empty list', renderFields('Tasks', []), 'No fields returned for entity "Tasks".');
+}
+
+// merge: tools/list gains the describe tool
+{
+  const merged = await mergeDocsToolIntoToolsList(fakeUpstream('application/json', '{"jsonrpc":"2.0","id":1,"result":{"tools":[]}}'));
+  const names = JSON.parse(merged).result.tools.map((t) => t.name);
+  check('merge: includes describe tool', names.includes('autotask_describe_entity'), true);
+}
+
+// describeEntity: correct URL + headers + response parsing (mocked fetch)
+{
+  const origFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, opts) => {
+    calls.push({ url, headers: opts?.headers });
+    if (url.includes('zoneInformation')) return { ok: true, json: async () => ({ url: 'https://na1.autotask.net/atservicesrest/api' }) };
+    if (url.includes('entityInformation/fields')) return { ok: true, json: async () => ({ fields: [{ name: 'id', dataType: 'integer', isRequired: false }] }) };
+    return { ok: false, status: 404, json: async () => ({}) };
+  };
+  try {
+    const fields = await describeEntity('Tasks', 12345);
+    check('describeEntity: returns parsed fields', fields.length, 1);
+    check('describeEntity: field name', fields[0].name, 'id');
+    const fieldCall = calls.find((c) => c.url.includes('entityInformation/fields'));
+    check('describeEntity: correct field URL', fieldCall.url, 'https://na1.autotask.net/atservicesrest/api/Tasks/entityInformation/fields');
+    check('describeEntity: sends impersonation header', fieldCall.headers['x-impersonation-resource-id'], '12345');
+    check('describeEntity: sends keycard header', fieldCall.headers['x-api-key'] !== undefined, true);
+  } finally {
+    globalThis.fetch = origFetch;
+  }
+}
 
 console.log(failures === 0 ? '\nALL PASS' : `\n${failures} FAILURES`);
 process.exit(failures === 0 ? 0 : 1);

@@ -86,20 +86,26 @@ The one thing these can't cover is the full wire path (real token →
 Autotask + Entra and is exercised in the pilot (see the plan doc's security
 tests).
 
-## Docs-as-tools (autotask_docs_search + autotask_docs_get)
+## Docs-as-tools (autotask_docs_search + autotask_docs_get + autotask_describe_entity)
 
 autotask-mcp has no documentation tool (CIPP's MCP has `SearchDocs`/`GetDoc`).
-The proxy closes that gap with the **same two-tool search-then-get pattern**:
-it injects `autotask_docs_search` and `autotask_docs_get` into the upstream
-`tools/list` response (JSON and SSE) and answers calls for both locally (no
-deps, no model, nothing pre-injected — the agent only pays tokens for what it
-retrieves).
+The proxy closes that gap with the **same search-then-get pattern** plus a
+**live schema** tool: it injects `autotask_docs_search`, `autotask_docs_get`,
+and `autotask_describe_entity` into the upstream `tools/list` response (JSON
+and SSE) and answers calls for all three locally (no deps, no model, nothing
+pre-injected — the agent only pays tokens for what it retrieves).
 
 - **`autotask_docs_search(query)`** — keyword search over the corpus, returns a
   ranked shortlist of doc names + snippets.
 - **`autotask_docs_get(name)`** — fetches the full text of one doc (a name from
   the search). This is where the real content — e.g. an entity's full field
   list — comes from.
+- **`autotask_describe_entity(entityName)`** — the **live** field schema:
+  queries the Autotask API (`/{entity}/entityInformation/fields`) for the
+  *current* field names, types, and required/picklist/queryable flags + picklist
+  values. Use it right before a `create_`/`update_` when you need the exact,
+  up-to-date field list (the static corpus can lag the live API). Answered with
+  the requesting user's impersonation id, so it respects their permissions.
 
 ### The corpus (two layers)
 
@@ -143,6 +149,39 @@ The gate trusts the upstream's own `annotations.readOnlyHint` classification
 when present (harvested from `tools/list`), and falls back to the prefix
 heuristics as the fail-safe for tools seen before the first `tools/list`.
 Flip to `READ_ONLY=false` for pilot phase 2 (writes: notes, time entries).
+
+## Access control & attribution
+
+Plain-English security model — the "who did what" story for ISO 27001:
+
+**Who did what (attribution).** Every request carries the *requesting user's*
+work sign-in. The proxy validates it against Entra, resolves the user's
+Autotask resource ID, and injects it as the `x-impersonation-resource-id`
+header. Autotask then performs the action **as that user** — so a note the AI
+adds to a ticket is recorded under the technician who asked, not under a
+shared "API user" account. (Stricter than the common MCP pattern, where changes
+are logged under the shared API key and you can't tell who actually asked.)
+
+**Credential scope (access control).** Two ceilings apply at once:
+1. The shared **API user's** Autotask security level — the hard ceiling for
+   everything the AI can do. Set it deliberately (not super-admin) to cap the
+   blast radius.
+2. The **requesting user's** own Autotask security level — impersonation means
+   the user can't exceed their own permissions. A junior tech asking the AI to
+do something their role can't do gets Autotask's own "access denied", not the
+AI guessing.
+
+Effective permission = `API user level ∩ requesting user level`.
+
+**Read-only pilot.** `READ_ONLY=true` (phase 1) rejects all write tools at the
+proxy, so the AI can look anything up but change nothing. Flip to `false` once
+the read-only evidence is in hand.
+
+**Prompt injection.** The agent reads Autotask data (ticket notes, etc.) that
+may contain free-text written by customers. The boundaries are: the read-only
+gate (phase 1), Autotask's own per-user permission check (the real enforcement
+— `autotask_raw_request` can't bypass it), and the fact that the docs tools are
+answered locally over a static corpus (no customer data in them).
 
 ## What the proxy logs
 
